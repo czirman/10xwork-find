@@ -1,0 +1,5 @@
+Let's plan cloudflare integration and deployment accordingly to @context/foundation/infrastructure.md
+
+Be mindfull about externa integrations, and for edge cases provide extra support streps. If need double-check anything, feel froo to browsw the web or githib for extra insights.
+
+Each Phase should be tracked via checkboxes or some sort of indicat

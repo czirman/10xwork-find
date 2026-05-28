@@ -1,0 +1,139 @@
+ Ready to code?
+                                                                                                                                                                                                                  ↑
+   Here is Claude's plan:
+  ╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌↑╌
+   Deploy 10xwork-find to Cloudflare Workers
+                                                                                                                                                                                                                  ↑
+   Context
+                                                                                                                                                                                                                  ↑
+   The project is already scaffolded for Cloudflare Workers (@astrojs/cloudflare v13.5.0, wrangler.jsonc with Workers entrypoint, nodejs_compat flag, assets.directory: "./dist"). What's missing: the Worker name is still the starter template default, the adapter version is unpinned (risk: breaking patch bumps), the CI workflow has no deploy step, and Cloudflare credentials have not been set up. This plan wires all o↑ that up end-to-end.
+                                                                                                                                                                                                                  ↑
+   ---
+   Phase 1 — Code Changes (automated)                                                                                                                                                                             ↑
+
+   Files to modify:                                                                                                                                                                                               ↑
+
+   1. wrangler.jsonc — fix Worker name                                                                                                                                                                            ↑
+
+   - Change "name": "10x-astro-starter" → "name": "10xwork-find"                                                                                                                                                  ↑
+   - This is the name that appears in the Cloudflare dashboard and forms the .workers.dev subdomain
+                                                                                                                                                                                                                  ↑
+   2. package.json — pin adapter version                                                                                                                                                                          ↑
+                                                                                                                                                                                                                  ↑
+   - Change "@astrojs/cloudflare": "^13.5.0" → "@astrojs/cloudflare": "13.5.0"                                                                                                                                    ↑
+   - Rationale: patch versions in v13 have included breaking changes (config key removals, env access changes); pinning prevents silent CI breakage from Dependabot bumps                                         ↑
+
+   3. .github/workflows/ci.yml — add deploy job                                                                                                                                                                   ↑
+
+   Add a deploy job after the existing ci job. It runs only on push to main (not on PRs), and only if ci passes (needs: ci). Rebuilds the app (no Supabase secrets needed — they're optional: true in astro.config.mjs), then deploys via cloudflare/wrangler-action@v3.
+                                                                                                                                                                                                                  ↑
+     deploy:
+       needs: ci                                                                                                                                                                                                  ↑
+       if: github.event_name == 'push' && github.ref == 'refs/heads/main'                                                                                                                                         ↑
+       runs-on: ubuntu-latest                                                                                                                                                                                     ↑
+       steps:
+         - uses: actions/checkout@v4
+         - uses: actions/setup-node@v4
+           with:                                                                                                                                                                                                  ↑
+             node-version: 22
+             cache: npm                                                                                                                                                                                           ↑
+         - run: npm ci                                                                                                                                                                                            ↑
+         - run: npm run build                                                                                                                                                                                     ↑
+         - uses: cloudflare/wrangler-action@v3
+           with:
+             apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+             accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}                                                                                                                                                      ↑
+             command: deploy
+                                                                                                                                                                                                                  ↑
+   ▎ Edge case — SUPABASE_URL/SUPABASE_KEY in existing CI build step: The current ci job passes these secrets to the build. Since both are optional: true in astro.config.mjs, removing them is safe. The new depl↑y job's build step intentionally omits them. The existing ci job's env block can be left as-is (empty strings from undefined secrets will not break the build).                                               ↑
+
+   4. .dev.vars — create local secrets file (gitignored)                                                                                                                                                          ↑
+                                                                                                                                                                                                                  ↑
+   Create an empty .dev.vars at the project root. This is the correct file for local Cloudflare Workers secrets (equivalent to .env). Currently missing; astro dev uses the workerd runtime and will look for this↑file. Since the app needs no secrets for its core functionality, the file can start empty.
+
+   # Local Cloudflare Workers secrets — gitignored
+   # EXAMPLE_SECRET=value                                                                                                                                                                                         ↑
+
+   ---
+   Phase 2 — Manual Authentication Gates
+
+   These steps require human action and cannot be automated. They must be completed before Phase 3.                                                                                                               ↑
+
+   Gate A — Authenticate Wrangler locally                                                                                                                                                                         ↑
+                                                                                                                                                                                                                  ↑
+   ! npx wrangler login                                                                                                                                                                                           ↑
+   Opens a browser OAuth flow. Required for the first manual deploy in Phase 3.
+
+   Gate B — Create a Cloudflare API Token
+                                                                                                                                                                                                                  ↑
+   1. Cloudflare dashboard → My Profile → API Tokens → Create Token
+   2. Use template "Edit Cloudflare Workers", scope to your account
+   3. Copy the token — it's shown only once
+   4. Find your Account ID: Cloudflare dashboard → right sidebar on any Workers/Pages page, under "Account ID"                                                                                                    ↑
+                                                                                                                                                                                                                  ↑
+   Gate C — Add GitHub repository secrets                                                                                                                                                                         ↑
+
+   In the GitHub repo → Settings → Secrets and variables → Actions → New repository secret:
+   - CLOUDFLARE_API_TOKEN — the token from Gate B
+   - CLOUDFLARE_ACCOUNT_ID — the Account ID from Gate B                                                                                                                                                           ↑
+
+   ---
+   Phase 3 — First Manual Deploy (Verification)
+
+   Run locally after completing Gates A–C:                                                                                                                                                                        ↑
+
+   # 1. Dry-run to validate wrangler config before touching production                                                                                                                                            ↑
+   npx wrangler deploy --dry-run                                                                                                                                                                                  ↑
+                                                                                                                                                                                                                  ↑
+   # 2. Build
+   npm run build
+
+   # 3. Deploy                                                                                                                                                                                                    ↑
+   npx wrangler deploy
+
+   Expected output: Deployed 10xwork-find ... https://10xwork-find.<account>.workers.dev
+                                                                                                                                                                                                                  ↑
+   Tail logs to confirm the Worker is alive:
+
+   npx wrangler tail 10xwork-find
+   Open the live URL in a browser — the request should appear in the tail with HTTP 200.                                                                                                                          ↑
+
+   ▎ Edge case — Worker name collision: If a Worker named 10xwork-find already exists on the account under a different project, wrangler deploy will overwrite it silently. List existing Workers first: npx wrangler deployments list or check the Cloudflare dashboard.                                                                                                                                                 ↑
+                                                                                                                                                                                                                  ↑
+   ▎ Edge case — CPU limit on free tier: If the synonym matching logic is CPU-intensive, the free tier's 10ms per-invocation cap may be hit on production PoPs. Symptom: 1101 Exceeded CPU limit error (not a 500). Mitigation: upgrade to Workers Standard ($5/mo) via the dashboard.                                                                                                                                           ↑
+
+   ---                                                                                                                                                                                                            ↑
+   Phase 4 — CI Auto-Deploy Verification
+                                                                                                                                                                                                                  ↑
+   After merging a commit to main:                                                                                                                                                                                ↑
+
+   1. Confirm the deploy job appears in GitHub Actions (after ci passes)
+   2. Confirm the Cloudflare dashboard shows a new deployment under 10xwork-find
+   3. Confirm the live URL serves the updated build
+
+   ▎ Edge case — first CI deploy without .dev.vars: The .dev.vars file is gitignored and only needed locally. CI does not need it; the deploy build step has no secrets to pass.
+
+   ▎ Edge case — wrangler pages deploy in old CI templates: If the team ever adds a new GitHub Actions template that uses wrangler pages deploy, it will fail (Pages SSR was removed in @astrojs/cloudflare v13). The correct command is always wrangler deploy (Workers path).
+
+   ---
+   Critical Files
+
+   ┌──────────────────────────┬──────────────────────────────────────────────────┐
+   │           File           │                      Change                      │
+   ├──────────────────────────┼──────────────────────────────────────────────────┤
+   │ wrangler.jsonc           │ name field: "10x-astro-starter" → "10xwork-find" │
+   ├──────────────────────────┼──────────────────────────────────────────────────┤
+   │ package.json             │ Pin @astrojs/cloudflare to "13.5.0" (remove ^)   │
+   ├──────────────────────────┼──────────────────────────────────────────────────┤
+   │ .github/workflows/ci.yml │ Add deploy job (push-to-main only, after ci)     │
+   ├──────────────────────────┼──────────────────────────────────────────────────┤
+   │ .dev.vars                │ Create empty file (gitignored)                   │
+   └──────────────────────────┴──────────────────────────────────────────────────┘                                                                                                                                 
+   ---
+   Verification Checklist
+
+   - [ ] npx wrangler deploy --dry-run exits 0 with no errors
+   - [ ] npx wrangler deploy outputs a live *.workers.dev URL
+   - [ ] wrangler tail shows an HTTP 200 on first visit
+[ ] GitHub Actions deploy job runs green on next push to main
+   - [ ] Cloudflare dashboard shows 10xwork-find Worker with correct deployment timestamp

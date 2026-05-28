@@ -1,0 +1,43 @@
+All four Phase 1 changes are done. Here's the summary and what's left for you to do manually:
+
+---
+Phase 1 — Complete
+
+┌──────────────────────────┬────────────────────────────────────────────────┐
+│           File           │                     Change                     │
+├──────────────────────────┼────────────────────────────────────────────────┤
+│ wrangler.jsonc           │ name → "10xwork-find"                          │
+├──────────────────────────┼────────────────────────────────────────────────┤
+│ package.json             │ @astrojs/cloudflare pinned to "13.5.0"         │
+├──────────────────────────┼────────────────────────────────────────────────┤
+│ .github/workflows/ci.yml │ deploy job added (push-to-main only, after ci) │
+├──────────────────────────┼────────────────────────────────────────────────┤
+│ .dev.vars                │ Created (gitignored at line 21 of .gitignore)  │
+└──────────────────────────┴────────────────────────────────────────────────┘
+
+---
+Phase 2 — Your turn (manual gates)
+
+1. Authenticate locally — run this in your terminal:
+! npx wrangler login
+2. Create a Cloudflare API Token
+  - Dashboard → My Profile → API Tokens → Create Token
+  - Template: "Edit Cloudflare Workers", scoped to your account
+  - Save the token — shown once only
+  - Account ID: visible in the right sidebar of any Workers/Pages dashboard page
+3. Add GitHub repo secrets
+  - Repo → Settings → Secrets and variables → Actions
+  - Add CLOUDFLARE_API_TOKEN and CLOUDFLARE_ACCOUNT_ID
+
+---
+Phase 3 — First deploy (after Gates A–C)
+
+npx wrangler deploy --dry-run   # validate config
+npm run build
+npx wrangler deploy             # live deploy → outputs *.workers.dev URL
+npx wrangler tail 10xwork-find  # confirm HTTP 200 on first visit
+
+✻ Worked for 3m 36s
+
+※ recap: Wiring up Cloudflare Workers deployment for 10xwork-find. Code changes are done — next step is for you to run `! npx wrangler login` in the terminal to authenticate, then create a Cloudflare API token.
+
