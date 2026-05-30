@@ -81,9 +81,18 @@ GitHub repo → Settings → Secrets and variables → Actions → New repositor
 - `CLOUDFLARE_API_TOKEN` — the token from Gate B
 - `CLOUDFLARE_ACCOUNT_ID` — the Account ID from Gate B (`14e0d56c656d00a1236017a85f01812b`)
 
+**Gate D — Verify the Cloudflare account email** ⚠️ discovered during first deploy attempt
+
+The Cloudflare API rejects Worker script uploads with `[code: 10034]` until the account email is verified, even though auth, build, asset upload, and KV provisioning all succeed first. One-time action: click the verification link sent to `service.mak@proton.me`, or trigger a resend via the dashboard banner / https://developers.cloudflare.com/fundamentals/setup/account/verify-email-address/. Re-run `npx wrangler deploy` after verifying.
+
 ---
 
-## Phase 3 — First Manual Deploy (Verification)
+## Phase 3 — First Manual Deploy (Verification) ✅ deployed 2026-05-28
+
+**Live URL:** https://10xwork-find.service-mak.workers.dev — verified HTTP 200.
+**Version ID:** `452ac73a-d6ce-4a6f-bee7-93a8ae9580a6`. **SESSION KV:** `9f37fdb86938437ca007853a3a143058`.
+
+> **Config fix applied during deploy:** the Astro adapter generates a `SESSION` KV binding with no `id`, so wrangler's auto-provisioner tried to create the namespace on every run and failed with `[code: 10014]` once it already existed. Fixed by declaring the binding with the existing namespace ID in `wrangler.jsonc` (`kv_namespaces`), which the build merges into `dist/server/wrangler.json`. CI deploys reuse this same config — no per-run provisioning.
 
 Run locally after completing Gates A–C:
 

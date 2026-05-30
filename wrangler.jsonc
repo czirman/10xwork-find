@@ -9,6 +9,13 @@
     "directory": "./dist",
     "not_found_handling": "404-page",
   },
+  "kv_namespaces": [
+    {
+      // Astro session store (auto-provisioned on first deploy as "10xwork-find-session")
+      "binding": "SESSION",
+      "id": "9f37fdb86938437ca007853a3a143058",
+    },
+  ],
   "observability": {
     "enabled": true,
   },
