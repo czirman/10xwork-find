@@ -430,16 +430,16 @@ verification passes, pause for final manual confirmation from the human.
 
 #### Automated
 
-- [x] 1.1 Build passes: `npm run build`
-- [x] 1.2 Lint passes: `npm run lint`
-- [x] 1.3 No imports/usages of deleted components: `grep -rn "Welcome.astro\|Topbar.astro\|<Welcome\|<Topbar" src/` returns nothing
-- [x] 1.4 No auth links on landing: `grep -rn "/auth/sign" src/pages/index.astro` returns nothing
+- [x] 1.1 Build passes: `npm run build` — 3a58bb6
+- [x] 1.2 Lint passes: `npm run lint` — 3a58bb6
+- [x] 1.3 No imports/usages of deleted components: `grep -rn "Welcome.astro\|Topbar.astro\|<Welcome\|<Topbar" src/` returns nothing — 3a58bb6
+- [x] 1.4 No auth links on landing: `grep -rn "/auth/sign" src/pages/index.astro` returns nothing — 3a58bb6
 
 #### Manual
 
-- [ ] 1.5 `/` shows the minimal tool shell, not the starter hero
-- [ ] 1.6 No Sign In / Sign Up buttons on the landing
-- [ ] 1.7 Browser tab title reflects the app, not the starter
+- [x] 1.5 `/` shows the minimal tool shell, not the starter hero — 3a58bb6
+- [x] 1.6 No Sign In / Sign Up buttons on the landing — 3a58bb6
+- [x] 1.7 Browser tab title reflects the app, not the starter — 3a58bb6
 
 ### Phase 2: Remove auth routes, gate & UI
 
