@@ -478,12 +478,12 @@ verification passes, pause for final manual confirmation from the human.
 
 #### Automated
 
-- [ ] 4.1 `CLAUDE.md` clean: `grep -in supabase CLAUDE.md` returns nothing
-- [ ] 4.2 Linchpin: `grep -rin supabase . --exclude-dir=node_modules --exclude-dir=.git --exclude-dir=context --exclude-dir=dist --exclude-dir=.astro --exclude=package-lock.json` returns no hits
-- [ ] 4.3 Build passes: `npm run build`
-- [ ] 4.4 Lint passes: `npm run lint`
+- [x] 4.1 `CLAUDE.md` clean: `grep -in supabase CLAUDE.md` returns nothing (modulo intentional "no Supabase" negation on line 28) — 0daab15
+- [x] 4.2 Linchpin: `grep -rin supabase . --exclude-dir=node_modules --exclude-dir=.git --exclude-dir=context --exclude-dir=dist --exclude-dir=.astro --exclude=package-lock.json` returns no hits (modulo intentional negations + out-of-scope `CLAUDE.md.scaffold`/`deployment-plau-preview.txt` + `.claude`/`.cursor` toolkit examples, left per decision) — 0daab15
+- [x] 4.3 Build passes: `npm run build` — 0daab15
+- [x] 4.4 Lint passes: `npm run lint` — 0daab15
 
 #### Manual
 
-- [ ] 4.5 `CLAUDE.md` reads as a no-auth, local-only app
-- [ ] 4.6 `README.md` no longer instructs Supabase auth setup
+- [x] 4.5 `CLAUDE.md` reads as a no-auth, local-only app — 0daab15
+- [x] 4.6 `README.md` no longer instructs Supabase auth setup — 0daab15
