@@ -46,9 +46,11 @@ graph and **zero test blast radius** (`src/lib/utils.test.ts` and
   `createClient` returns `null` when secrets are absent (`src/lib/supabase.ts:6-8`),
   so **the build already does not require the secrets** — removing the env schema
   and the CI injection is safe and breaks nothing.
-- `context.locals.user` is read only by `dashboard.astro` (deleted here); no other
-  file reads `Astro.locals`, so dropping the `Locals.user` type in `src/env.d.ts`
-  is safe (verified by `grep -rn "locals" src/`).
+- `context.locals.user` is read by `middleware.ts`, `components/Topbar.astro:2`,
+  and `dashboard.astro:4` — all deleted by Phase 2 (Topbar in Phase 1, middleware +
+  dashboard in Phase 2), before the `Locals.user` type drop in `src/env.d.ts` in
+  Phase 3. So dropping the type is safe; no reader survives the change (final guard:
+  `grep -rn "locals" src/` returns nothing in Phase 3).
 - `Topbar.astro` is imported only by `Welcome.astro`; `Banner.astro` only by
   `Layout.astro`; `config-status.ts` only by `Layout.astro` — clean leaf removals.
 - No test references auth; the only tests are `utils.test.ts`.
@@ -141,7 +143,7 @@ unreferenced once index is repointed.
 
 - Build passes: `npm run build`
 - Lint passes: `npm run lint`
-- No references to deleted components: `grep -rn "Welcome\|Topbar" src/` returns nothing
+- No imports/usages of deleted components: `grep -rn "Welcome.astro\|Topbar.astro\|<Welcome\|<Topbar" src/` returns nothing (a bare `Welcome\|Topbar` grep would false-positive on the "Welcome," prose in `dashboard.astro`, which is not deleted until Phase 2)
 - No auth links remain on the landing: `grep -rn "/auth/sign" src/pages/index.astro` returns nothing
 
 #### Manual Verification:
@@ -364,7 +366,7 @@ Any residual that can't be cleanly excised is noted for follow-up.
 #### Automated Verification:
 
 - `CLAUDE.md` is clean: `grep -in supabase CLAUDE.md` returns nothing
-- **Linchpin full-removal check** — `grep -rin supabase . --exclude-dir=node_modules --exclude-dir=.git --exclude-dir=context --exclude=package-lock.json` returns no hits
+- **Linchpin full-removal check** — `grep -rin supabase . --exclude-dir=node_modules --exclude-dir=.git --exclude-dir=context --exclude-dir=dist --exclude-dir=.astro --exclude=package-lock.json` returns no hits (excluding `dist`/`.astro` keeps the check on tracked source — both are gitignored build artifacts that can carry stale env-schema strings from earlier `npm run build` runs)
 - Build still passes: `npm run build`
 - Lint passes: `npm run lint`
 
@@ -430,7 +432,7 @@ verification passes, pause for final manual confirmation from the human.
 
 - [ ] 1.1 Build passes: `npm run build`
 - [ ] 1.2 Lint passes: `npm run lint`
-- [ ] 1.3 No references to deleted components: `grep -rn "Welcome\|Topbar" src/` returns nothing
+- [ ] 1.3 No imports/usages of deleted components: `grep -rn "Welcome.astro\|Topbar.astro\|<Welcome\|<Topbar" src/` returns nothing
 - [ ] 1.4 No auth links on landing: `grep -rn "/auth/sign" src/pages/index.astro` returns nothing
 
 #### Manual
@@ -477,7 +479,7 @@ verification passes, pause for final manual confirmation from the human.
 #### Automated
 
 - [ ] 4.1 `CLAUDE.md` clean: `grep -in supabase CLAUDE.md` returns nothing
-- [ ] 4.2 Linchpin: `grep -rin supabase . --exclude-dir=node_modules --exclude-dir=.git --exclude-dir=context --exclude=package-lock.json` returns no hits
+- [ ] 4.2 Linchpin: `grep -rin supabase . --exclude-dir=node_modules --exclude-dir=.git --exclude-dir=context --exclude-dir=dist --exclude-dir=.astro --exclude=package-lock.json` returns no hits
 - [ ] 4.3 Build passes: `npm run build`
 - [ ] 4.4 Lint passes: `npm run lint`
 
