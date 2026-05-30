@@ -460,19 +460,19 @@ verification passes, pause for final manual confirmation from the human.
 
 #### Automated
 
-- [ ] 3.1 Build passes: `npm run build`
-- [ ] 3.2 Lint passes: `npm run lint`
-- [ ] 3.3 Tests pass: `npm run test:run`
-- [ ] 3.4 No Supabase env usage: `grep -rn "astro:env" src/` returns nothing
-- [ ] 3.5 No Supabase deps: `grep -n "supabase" package.json` returns nothing
-- [ ] 3.6 No straggler `locals` reader: `grep -rn "locals" src/` returns nothing
-- [ ] 3.7 `supabase/` directory gone: `ls supabase` errors
+- [x] 3.1 Build passes: `npm run build` — 865985f
+- [x] 3.2 Lint passes: `npm run lint` — 865985f
+- [x] 3.3 Tests pass: `npm run test:run` — 865985f
+- [x] 3.4 No Supabase env usage: `grep -rn "astro:env" src/` returns nothing — 865985f
+- [x] 3.5 No Supabase deps: `grep -n "supabase" package.json` returns nothing — 865985f
+- [x] 3.6 No straggler `locals` reader: `grep -rn "locals" src/` returns nothing — 865985f
+- [x] 3.7 `supabase/` directory gone: `ls supabase` errors — 865985f
 
 #### Manual
 
-- [ ] 3.8 `/` renders with no config-warning banner
-- [ ] 3.9 App loads identically to end of Phase 1 (banner aside)
-- [ ] 3.10 Fresh `npm install` succeeds without Supabase packages
+- [x] 3.8 `/` renders with no config-warning banner — 865985f
+- [x] 3.9 App loads identically to end of Phase 1 (banner aside) — 865985f
+- [x] 3.10 Fresh `npm install` succeeds without Supabase packages — 865985f
 
 ### Phase 4: Documentation hygiene
 
