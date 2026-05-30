@@ -430,10 +430,10 @@ verification passes, pause for final manual confirmation from the human.
 
 #### Automated
 
-- [ ] 1.1 Build passes: `npm run build`
-- [ ] 1.2 Lint passes: `npm run lint`
-- [ ] 1.3 No imports/usages of deleted components: `grep -rn "Welcome.astro\|Topbar.astro\|<Welcome\|<Topbar" src/` returns nothing
-- [ ] 1.4 No auth links on landing: `grep -rn "/auth/sign" src/pages/index.astro` returns nothing
+- [x] 1.1 Build passes: `npm run build`
+- [x] 1.2 Lint passes: `npm run lint`
+- [x] 1.3 No imports/usages of deleted components: `grep -rn "Welcome.astro\|Topbar.astro\|<Welcome\|<Topbar" src/` returns nothing
+- [x] 1.4 No auth links on landing: `grep -rn "/auth/sign" src/pages/index.astro` returns nothing
 
 #### Manual
 
