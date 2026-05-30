@@ -445,10 +445,10 @@ verification passes, pause for final manual confirmation from the human.
 
 #### Automated
 
-- [ ] 2.1 Build passes: `npm run build`
-- [ ] 2.2 Lint passes: `npm run lint`
-- [ ] 2.3 Auth routes/components gone (`ls` errors on every deleted path)
-- [ ] 2.4 No imports of deleted auth surface: `grep -rn "components/auth\|api/auth\|/dashboard" src/` returns nothing
+- [x] 2.1 Build passes: `npm run build`
+- [x] 2.2 Lint passes: `npm run lint`
+- [x] 2.3 Auth routes/components gone (`ls` errors on every deleted path)
+- [x] 2.4 No imports of deleted auth surface: `grep -rn "components/auth\|api/auth\|/dashboard" src/` returns nothing
 
 #### Manual
 
