@@ -445,16 +445,16 @@ verification passes, pause for final manual confirmation from the human.
 
 #### Automated
 
-- [x] 2.1 Build passes: `npm run build`
-- [x] 2.2 Lint passes: `npm run lint`
-- [x] 2.3 Auth routes/components gone (`ls` errors on every deleted path)
-- [x] 2.4 No imports of deleted auth surface: `grep -rn "components/auth\|api/auth\|/dashboard" src/` returns nothing
+- [x] 2.1 Build passes: `npm run build` — 655808d
+- [x] 2.2 Lint passes: `npm run lint` — 655808d
+- [x] 2.3 Auth routes/components gone (`ls` errors on every deleted path) — 655808d
+- [x] 2.4 No imports of deleted auth surface: `grep -rn "components/auth\|api/auth\|/dashboard" src/` returns nothing — 655808d
 
 #### Manual
 
-- [ ] 2.5 `/auth/signin`, `/auth/signup`, `/dashboard` all 404 (no redirect/gate)
-- [ ] 2.6 `/` still renders the tool shell
-- [ ] 2.7 No console errors on the landing
+- [x] 2.5 `/auth/signin`, `/auth/signup`, `/dashboard` all 404 (no redirect/gate) — 655808d
+- [x] 2.6 `/` still renders the tool shell — 655808d
+- [x] 2.7 No console errors on the landing — 655808d
 
 ### Phase 3: Strip Supabase library, config & dependencies
 
