@@ -359,16 +359,16 @@ No virtualization, debouncing, or memoization needed at this scale. The NFR
 
 #### Automated
 
-- [x] 2.1 Build passes: `npm run build`
-- [x] 2.2 Type check passes: `npx astro check`
-- [x] 2.3 Lint passes: `npm run lint`
-- [x] 2.4 Tests pass: `npm run test:run`
-- [x] 2.5 `BaseSkillsManager` test covers add / edit / delete / undo / duplicate-rejection happy paths
+- [x] 2.1 Build passes: `npm run build` — 3e2b7da
+- [x] 2.2 Type check passes: `npx astro check` — 3e2b7da
+- [x] 2.3 Lint passes: `npm run lint` — 3e2b7da
+- [x] 2.4 Tests pass: `npm run test:run` — 3e2b7da
+- [x] 2.5 `BaseSkillsManager` test covers add / edit / delete / undo / duplicate-rejection happy paths — 3e2b7da
 
 #### Manual
 
-- [x] 2.6 `/` shows add field, list, and empty-state message
-- [x] 2.7 Added skills persist across page reload and browser restart
-- [x] 2.8 "C" and "CI/CD" accepted; blank rejected; "git" vs "Git" duplicate refused — all with Polish messages
-- [x] 2.9 Inline edit Save persists, Cancel discards; delete is immediate; Cofnij restores within the undo window
-- [x] 2.10 No console errors and no hydration warnings (confirms `client:only` mounting)
+- [x] 2.6 `/` shows add field, list, and empty-state message — 3e2b7da
+- [x] 2.7 Added skills persist across page reload and browser restart — 3e2b7da
+- [x] 2.8 "C" and "CI/CD" accepted; blank rejected; "git" vs "Git" duplicate refused — all with Polish messages — 3e2b7da
+- [x] 2.9 Inline edit Save persists, Cancel discards; delete is immediate; Cofnij restores within the undo window — 3e2b7da
+- [x] 2.10 No console errors and no hydration warnings (confirms `client:only` mounting) — 3e2b7da
