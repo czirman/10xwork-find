@@ -1,0 +1,57 @@
+claude-code
+/init - warto zacząć
+claude.md - to
+
+npx @przeprogramowani/10x-cli@latest get m1l1 --tool cursor
+10x 
+
+https://github.com/przeprogramowani/10x-cli 
+
+npx skills add  @przeprogramowani/10x-cli 
+
+
+
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+TROUBLESJHOTING
+
+1 In case of autocorrection not appear. Type claude
+
+2. 
+
+
+----------------
+
+Kroki które claudei init  ulepszony polecił
+
+
+1. Fix CI branch mismatch — .github/workflows/ci.yml triggers on master but your default branch is main. Update the trigger to main so CI actually fires on pushes.
+2. Install GitHub CLI — sudo dnf install gh && gh auth login (see above). Enables Claude to open PRs, check CI status, and manage issues directly.
+3. Install the Playwright plugin — this project has a React frontend. /plugin install playwright@claude-plugins-official lets Claude launch a real browser, screenshot pages, and fix visual bugs itself.
+4. Install the frontend design plugin — /plugin install frontend-design@claude-plugins-official gives Claude design principles and component patterns for polished Astro + shadcn/ui work.
+5. Add a test framework — no test runner is configured. Consider Vitest (fits well with the Vite/Astro stack) so Claude can verify its own changes.
+6. Create and optimize skills — /plugin install skill-creator@claude-plugins-official then /skill-creator <name> to build project-specific skills (e.g. a /deploy-preview or /verify-auth workflow).
+7. Browse official plugins — run /plugin to see the full catalog of bundled skills, agents, hooks, and MCP servers.
+
+
+
+- npm run test — watch mode
+- npm run test:run — single run (good for CI)
+- npm run test:coverage — coverage report
+
+
+/skill-creator
+/plugin - pokazuje łatnie pluginy, zainstloawnie dostepne
+
+
+/10x-lesson - do dodaje skile też 
+
+npx wrangler login - logowanie agenta / moje do claudflare
+
+
+DB pass: GSSQNmWhbn5IIkTsYdt47wmQvUbZqDbIUd0ZSSJWYgc
+
+
+Po zapisaniu reguły agent zapyta, czy chcesz od razu zastosować poprawkę w kodzie - m2l3 -  Dodawanie regul lesson do automatyzacji CR
+

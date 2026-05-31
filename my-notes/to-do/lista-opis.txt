@@ -1,0 +1,2 @@
+1-research - Wróc do lekcji m2l4. Do nauki. Moja funkcyjność jest na tyle prosta że nie było sensu tego zadania robić na bierzącą
+             Ale warto to niego wrócić. Comiit i zip w katalogu daje możliwość odgałezienia do nowego katalogu. Ewentualnie branch od tego punktu XD
