@@ -55,3 +55,9 @@ DB pass: GSSQNmWhbn5IIkTsYdt47wmQvUbZqDbIUd0ZSSJWYgc
 
 Po zapisaniu reguły agent zapyta, czy chcesz od razu zastosować poprawkę w kodzie - m2l3 -  Dodawanie regul lesson do automatyzacji CR
 
+
+git worktree add, zalecaja tego  jako worktree per slice. Obadać jak uzywac to to nie jest brach
+
+
+/goal Use 10x-implement skill to implement all phases of context/changes/ux-improvements/plan.md. Each phase is committed separately. All phases marked done in plan progress. Stop after 20 turns if not complete.
+To uruchomieni dla niekotrolowanych przeze mnie agentów do impl, Bez mojego nazdrou. Nadaje sie do łatwych mierzalnych zadan

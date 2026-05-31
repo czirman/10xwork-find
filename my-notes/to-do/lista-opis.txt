@@ -1,2 +1,10 @@
-1-research - Wróc do lekcji m2l4. Do nauki. Moja funkcyjność jest na tyle prosta że nie było sensu tego zadania robić na bierzącą
+1-research - Wróc do lekcji m2l5. Do nauki. Moja funkcyjność jest na tyle prosta że nie było sensu tego zadania robić na bierzącą
              Ale warto to niego wrócić. Comiit i zip w katalogu daje możliwość odgałezienia do nowego katalogu. Ewentualnie branch od tego punktu XD
+
+
+2- równoległa praca. Wróc do lekcji m2l5. Chodzi o pracę z git worktree i równoegła pracą na sliceach. Wróce kiedy rozbuduje funkcjonalności. Aby uruchomić niezleżnego bez nadzoru, uruchomić poleceniem /goal np
+
+/goal Use 10x-implement skill to implement all phases of context/changes/ux-improvements/plan.md. Each phase is committed separately. All phases marked done in plan progress. Stop after 20 turns if not complete.
+To uruchomieni dla niekotrolowanych przeze mnie agentów do impl, Bez mojego nazdrou. Nadaje sie do łatwych mierzalnych zadan
+             
+             
