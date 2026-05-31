@@ -348,12 +348,12 @@ No virtualization, debouncing, or memoization needed at this scale. The NFR
 
 #### Automated
 
-- [ ] 1.1 Build passes: `npm run build`
-- [ ] 1.2 Type check passes: `npx astro check`
-- [ ] 1.3 Lint passes: `npm run lint`
-- [ ] 1.4 Unit tests pass: `npm run test:run`
-- [ ] 1.5 `skills.ts` unit tests cover validation boundaries, permissive charset, case-insensitive trimmed dedup, and `excludeId`
-- [ ] 1.6 `useBaseSkills` test covers persistence round-trip and defensive read of missing/malformed data
+- [x] 1.1 Build passes: `npm run build`
+- [x] 1.2 Type check passes: `npx astro check`
+- [x] 1.3 Lint passes: `npm run lint`
+- [x] 1.4 Unit tests pass: `npm run test:run`
+- [x] 1.5 `skills.ts` unit tests cover validation boundaries, permissive charset, case-insensitive trimmed dedup, and `excludeId`
+- [x] 1.6 `useBaseSkills` test covers persistence round-trip and defensive read of missing/malformed data
 
 ### Phase 2: Skills-management UI island
 
