@@ -56,7 +56,12 @@ function readStore(): Skill[] {
 
 function writeStore(skills: Skill[]): void {
   if (typeof window === "undefined") return;
-  window.localStorage.setItem(STORAGE_KEY, JSON.stringify({ version: 1, skills }));
+  try {
+    window.localStorage.setItem(STORAGE_KEY, JSON.stringify({ version: 1, skills }));
+  } catch {
+    // Best-effort persistence: quota exceeded or storage disabled
+    // (e.g. private mode) must not crash the persist effect.
+  }
 }
 
 /**

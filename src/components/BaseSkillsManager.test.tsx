@@ -34,7 +34,7 @@ describe("BaseSkillsManager", () => {
     render(<BaseSkillsManager />);
     await addSkill(user, "Git");
 
-    await user.click(screen.getByRole("button", { name: "Edytuj" }));
+    await user.click(screen.getByRole("button", { name: /^Edytuj/ }));
     const editInput = screen.getByLabelText("Edytuj nazwę umiejętności");
     await user.clear(editInput);
     await user.type(editInput, "GitHub");
@@ -49,7 +49,7 @@ describe("BaseSkillsManager", () => {
     render(<BaseSkillsManager />);
     await addSkill(user, "Java");
 
-    await user.click(screen.getByRole("button", { name: "Usuń" }));
+    await user.click(screen.getByRole("button", { name: /^Usuń/ }));
     expect(screen.queryByText("Java")).not.toBeInTheDocument();
 
     await user.click(screen.getByRole("button", { name: "Cofnij" }));

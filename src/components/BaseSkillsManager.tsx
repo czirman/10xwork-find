@@ -166,6 +166,7 @@ export default function BaseSkillsManager() {
                     type="button"
                     variant="ghost"
                     size="sm"
+                    aria-label={`Edytuj ${skill.name}`}
                     onClick={() => {
                       startEdit(skill);
                     }}
@@ -176,6 +177,7 @@ export default function BaseSkillsManager() {
                     type="button"
                     variant="ghost"
                     size="sm"
+                    aria-label={`Usuń ${skill.name}`}
                     onClick={() => {
                       handleDelete(skill);
                     }}
