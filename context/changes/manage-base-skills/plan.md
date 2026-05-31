@@ -348,27 +348,27 @@ No virtualization, debouncing, or memoization needed at this scale. The NFR
 
 #### Automated
 
-- [x] 1.1 Build passes: `npm run build`
-- [x] 1.2 Type check passes: `npx astro check`
-- [x] 1.3 Lint passes: `npm run lint`
-- [x] 1.4 Unit tests pass: `npm run test:run`
-- [x] 1.5 `skills.ts` unit tests cover validation boundaries, permissive charset, case-insensitive trimmed dedup, and `excludeId`
-- [x] 1.6 `useBaseSkills` test covers persistence round-trip and defensive read of missing/malformed data
+- [x] 1.1 Build passes: `npm run build` — 9a67e9b
+- [x] 1.2 Type check passes: `npx astro check` — 9a67e9b
+- [x] 1.3 Lint passes: `npm run lint` — 9a67e9b
+- [x] 1.4 Unit tests pass: `npm run test:run` — 9a67e9b
+- [x] 1.5 `skills.ts` unit tests cover validation boundaries, permissive charset, case-insensitive trimmed dedup, and `excludeId` — 9a67e9b
+- [x] 1.6 `useBaseSkills` test covers persistence round-trip and defensive read of missing/malformed data — 9a67e9b
 
 ### Phase 2: Skills-management UI island
 
 #### Automated
 
-- [ ] 2.1 Build passes: `npm run build`
-- [ ] 2.2 Type check passes: `npx astro check`
-- [ ] 2.3 Lint passes: `npm run lint`
-- [ ] 2.4 Tests pass: `npm run test:run`
-- [ ] 2.5 `BaseSkillsManager` test covers add / edit / delete / undo / duplicate-rejection happy paths
+- [x] 2.1 Build passes: `npm run build`
+- [x] 2.2 Type check passes: `npx astro check`
+- [x] 2.3 Lint passes: `npm run lint`
+- [x] 2.4 Tests pass: `npm run test:run`
+- [x] 2.5 `BaseSkillsManager` test covers add / edit / delete / undo / duplicate-rejection happy paths
 
 #### Manual
 
-- [ ] 2.6 `/` shows add field, list, and empty-state message
-- [ ] 2.7 Added skills persist across page reload and browser restart
-- [ ] 2.8 "C" and "CI/CD" accepted; blank rejected; "git" vs "Git" duplicate refused — all with Polish messages
-- [ ] 2.9 Inline edit Save persists, Cancel discards; delete is immediate; Cofnij restores within the undo window
-- [ ] 2.10 No console errors and no hydration warnings (confirms `client:only` mounting)
+- [x] 2.6 `/` shows add field, list, and empty-state message
+- [x] 2.7 Added skills persist across page reload and browser restart
+- [x] 2.8 "C" and "CI/CD" accepted; blank rejected; "git" vs "Git" duplicate refused — all with Polish messages
+- [x] 2.9 Inline edit Save persists, Cancel discards; delete is immediate; Cofnij restores within the undo window
+- [x] 2.10 No console errors and no hydration warnings (confirms `client:only` mounting)
