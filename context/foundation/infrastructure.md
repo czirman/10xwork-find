@@ -103,7 +103,7 @@ Then the free tier CPU limit emerged. The synonym matching code ran in 2ms on th
 
 - **Preview deploys:** `wrangler deploy --env preview` (requires a `[env.preview]` stanza in `wrangler.jsonc`). Alternatively, every PR branch can be deployed to a named Worker (`10xwork-find-pr-42`) for manual QA. No built-in preview URL system like Vercel/Netlify — preview isolation requires explicit environment config or separate Worker names.
 
-- **Secrets:** Environment variables live in Cloudflare's encrypted secrets store. Set with `wrangler secret put VAR_NAME` (interactive prompt) or `echo "value" | wrangler secret put VAR_NAME` (scriptable). For local dev, use `.dev.vars` (gitignored, same format as `.env`). This project's `.env.example` shows `SUPABASE_URL` / `SUPABASE_KEY` — these are inherited from the starter template and are **not needed** for this app (no server-side auth or DB). Rotation: `wrangler secret put VAR_NAME` overwrites the existing value; no downtime required.
+- **Secrets:** Environment variables live in Cloudflare's encrypted secrets store. Set with `wrangler secret put VAR_NAME` (interactive prompt) or `echo "value" | wrangler secret put VAR_NAME` (scriptable). For local dev, use `.dev.vars` (gitignored, same format as `.env`). This app needs no runtime environment variables (no server-side auth or DB). Rotation: `wrangler secret put VAR_NAME` overwrites the existing value; no downtime required.
 
 - **Rollback:** `wrangler rollback` reverts to the previous deployed version. To roll back to a specific version: `wrangler rollback <version-id>` (list versions with `wrangler versions list`). Rollbacks are near-instant (no rebuild). Database migrations (if ever added) do not roll back automatically.
 

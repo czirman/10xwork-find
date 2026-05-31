@@ -1,9 +1,9 @@
 ---
 change_id: local-only-app-shell
 title: Land the single user directly in the tool — neutralize the auth gate
-status: implemented
+status: impl_reviewed
 created: 2026-05-30
-updated: 2026-05-30
+updated: 2026-05-31
 archived_at: null
 ---
 
