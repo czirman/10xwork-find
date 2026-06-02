@@ -61,3 +61,14 @@ git worktree add, zalecaja tego  jako worktree per slice. Obadać jak uzywac to 
 
 /goal Use 10x-implement skill to implement all phases of context/changes/ux-improvements/plan.md. Each phase is committed separately. All phases marked done in plan progress. Stop after 20 turns if not complete.
 To uruchomieni dla niekotrolowanych przeze mnie agentów do impl, Bez mojego nazdrou. Nadaje sie do łatwych mierzalnych zadan
+
+
+
+Cykl impl  sklicow
+/10x-plan
+/10x-implement <change-id>.
+/10x-review-plan
+/10x-
+
+
+claude --resume 55cf2cb6-a410-4c28-917a-af9b4f5e77d6
