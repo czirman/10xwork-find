@@ -350,10 +350,10 @@ discard-and-start-fresh.
 
 #### Automated
 
-- [x] 3.1 No TBD remains in §6.1/§6.2: `grep -n "TBD" context/foundation/test-plan.md`
-- [x] 3.2 Full suite still green: `npm run test:run`
+- [x] 3.1 No TBD remains in §6.1/§6.2: `grep -n "TBD" context/foundation/test-plan.md` — dcbdd18
+- [x] 3.2 Full suite still green: `npm run test:run` — dcbdd18
 
 #### Manual
 
-- [x] 3.3 §6 patterns let a fresh reader add a new persistence test from them alone
-- [x] 3.4 §2 #4 reads consistently with the discard-and-start-fresh decision
+- [x] 3.3 §6 patterns let a fresh reader add a new persistence test from them alone — dcbdd18
+- [x] 3.4 §2 #4 reads consistently with the discard-and-start-fresh decision — dcbdd18
