@@ -80,7 +80,7 @@ note.
 | #1 | A fixed set of known should-map synonyms still maps after a change (regression guard), AND the measured match rate on a human-labeled posting-fixture set stays ≥75% | "The map looks complete." Also: deriving expected matches *from the synonym map itself* | The match entry point, the synonym-map source of truth, where the fixture/labeled expectations should live | unit (regression set) + characterization (labeled fixtures) | Oracle problem — expected matches lifted from the map under test, making the assertion tautological |
 | #2 | Inputs differing only by case / surrounding whitespace / trailing punctuation / duplication still resolve to the same match | "Equal-looking strings compare equal." Hidden Unicode / locale casing | The normalization step and exactly which transforms it applies before lookup | unit (equivalence classes) | Snapshotting `normalize()` output (mirrors the implementation rather than asserting the rule) |
 | #3 | For arbitrary inputs, the output set is a strict subset of the user's declared base skills — never a posting term, never a synonym-map key | "Happy-path output looks right, so it's always a subset." | The output-assembly step and where the declared-skills set originates | unit / property (invariant test) | Asserting against the assembler's own output instead of the independent declared-skills set |
-| #4 | After a write + reload (or a simulated restart), the list reads back identical; malformed or absent stored data degrades safely instead of crashing or wiping | "It wrote, so it'll read back." "A happy reload implies corruption-resilience." | The persistence read/write path, the storage key + serialization shape, version/schema handling | integration (real storage round-trip) | Over-mocking the storage layer so the real serialization is never exercised |
+| #4 | After a write + reload (or a simulated restart), the list reads back identical; malformed or absent stored data degrades safely instead of crashing or wiping. *Exception:* stored data with an **unknown/future** schema `version` is **intentionally** discarded (start-fresh) per the 2026-06-04 decision — a deliberate breaking-change tripwire, not a wipe of valid current data | "It wrote, so it'll read back." "A happy reload implies corruption-resilience." | The persistence read/write path, the storage key + serialization shape, version/schema handling | integration (real storage round-trip) | Over-mocking the storage layer so the real serialization is never exercised |
 | #5 | Performing CRUD makes zero network requests that carry skill or posting data off-device | "No backend means nothing can leak." (The removed Supabase fetch client could be reintroduced) | Where persistence actually writes; any retained Supabase/HTTP imports reachable at runtime | integration (network spy / interception) | Asserting "Supabase is not imported" statically instead of asserting runtime no-network behavior |
 | #6 | Add rejects empty/whitespace and duplicates; edit targets only the intended item; delete removes only the intended item | "The happy add path covers it." | The CRUD operations and their uniqueness / validation rules | unit / integration | Happy-path-only (add one, assert present) with no collision / dedupe / empty cases |
 | #7 | The copied string matches the declared CV-ready format exactly (no cleanup needed), and the clipboard receives that exact payload | "It rendered, so it's paste-clean." | The output-format spec, the assembly step, the clipboard call site | unit (golden format) + integration (clipboard payload) | Meaningless snapshot; asserting `writeText` was called without checking the payload |
@@ -93,7 +93,7 @@ as artifacts appear on disk.
 
 | # | Phase name | Goal (one line) | Risks covered | Test types | Status | Change folder |
 |---|------------|-----------------|----------------|------------|--------|---------------|
-| 1 | Base-skills persistence & CRUD integrity | Prove the saved list survives reloads and that add/edit/delete keep it valid | #4, #6 | unit + integration | implementing | context/changes/testing-base-skills-crud/ |
+| 1 | Base-skills persistence & CRUD integrity | Prove the saved list survives reloads and that add/edit/delete keep it valid | #4, #6 | unit + integration | complete | context/changes/testing-base-skills-crud/ |
 | 2 | On-device data-locality guard | Prove CRUD makes no network request carrying skill or posting data | #5 | integration (network interception) | not started | — |
 | 3 | Quality-gate wiring | Lock the floor: run typecheck + unit/integration in CI on every PR | cross-cutting | gates | not started | — |
 
@@ -165,14 +165,37 @@ relevant rollout phase ships; before that it reads "TBD — see §3 Phase N."
 
 ### 6.1 Adding a unit test
 
-- TBD — see §3 Phase 1 (CRUD invariants on the `skills` service: dedupe,
-  empty-rejection, edit/delete targeting).
+- **Scope**: pure functions in `src/lib/services/` (no DOM, no storage) —
+  e.g. `validateSkillName` / `isDuplicate` in `skills.ts`. Worked example:
+  `src/lib/services/skills.test.ts`.
+- **Pattern**: import the function and assert the **rule**, not the
+  implementation's intermediate output. For dedup, assert that `"Git"` and
+  `" git "` collide (case- and whitespace-insensitive); do **not** snapshot
+  `normalize()` / `dedupKey()` output — that mirrors the code (see §2 #2).
+- **Edge cases are mandatory** (§2 #6 anti-pattern): every rule carries at
+  least one rejecting case — empty/whitespace, max-length boundary,
+  disallowed chars — not just a happy accept. Use `it.each` for equivalence
+  classes so each case catches a distinct regression.
 
 ### 6.2 Adding an integration / persistence test
 
-- TBD — see §3 Phase 1 (real `localStorage` round-trip on `useBaseSkills`:
-  write → reload → read-back; malformed / absent stored data degrades
-  safely).
+- **Scope**: `useBaseSkills` (state + `localStorage` + CRUD). Worked example:
+  `src/components/hooks/useBaseSkills.test.ts`.
+- **Pattern**: drive the hook with `renderHook` + `act` from
+  `@testing-library/react`; use the **real jsdom `localStorage`** — never mock
+  the storage layer, that hides the serialization bug #4 is about (see §2 #4).
+  Clear the store in `beforeEach`.
+- **Cross-session round-trip** (the headline FR-004 proof): mutate via the
+  hook → `unmount()` → fresh `renderHook(() => useBaseSkills())` → assert
+  `result.current.skills` equals the **literal expected list** you constructed,
+  NOT a value re-read via `readStore` (the oracle/mirror trap). Cover
+  add/edit/delete survival.
+- **Degrade-safely**: seed `localStorage` raw with corrupt or unknown-version
+  bytes, mount, assert `[]` and no throw. Per the 2026-06-04 decision,
+  unknown/future versions are *intentionally* discarded (start-fresh) — assert
+  the clean `{version:1}` envelope after the next add, not `readStore` output.
+- **Storage failure**: `vi.spyOn(Storage.prototype, "setItem")` to throw;
+  assert CRUD still updates memory and does not crash (NFR robustness).
 
 ### 6.3 Adding an on-device data-locality test
 

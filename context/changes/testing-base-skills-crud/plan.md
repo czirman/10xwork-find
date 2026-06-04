@@ -343,17 +343,17 @@ discard-and-start-fresh.
 
 #### Manual
 
-- [x] 2.5 Round-trip assertions use a literal expected list, not a re-read of the store
-- [x] 2.6 Destroy-on-open test comment names the 2026-06-04 decision as its oracle
+- [x] 2.5 Round-trip assertions use a literal expected list, not a re-read of the store — 333b7a1
+- [x] 2.6 Destroy-on-open test comment names the 2026-06-04 decision as its oracle — 333b7a1
 
 ### Phase 3: Cookbook + plan sync (docs)
 
 #### Automated
 
-- [ ] 3.1 No TBD remains in §6.1/§6.2: `grep -n "TBD" context/foundation/test-plan.md`
-- [ ] 3.2 Full suite still green: `npm run test:run`
+- [x] 3.1 No TBD remains in §6.1/§6.2: `grep -n "TBD" context/foundation/test-plan.md`
+- [x] 3.2 Full suite still green: `npm run test:run`
 
 #### Manual
 
-- [ ] 3.3 §6 patterns let a fresh reader add a new persistence test from them alone
-- [ ] 3.4 §2 #4 reads consistently with the discard-and-start-fresh decision
+- [x] 3.3 §6 patterns let a fresh reader add a new persistence test from them alone
+- [x] 3.4 §2 #4 reads consistently with the discard-and-start-fresh decision
