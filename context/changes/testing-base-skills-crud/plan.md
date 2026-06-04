@@ -336,15 +336,15 @@ discard-and-start-fresh.
 
 #### Automated
 
-- [x] 2.1 Tests pass: `npm run test:run`
-- [x] 2.2 Lint passes: `npm run lint`
-- [x] 2.3 Coverage on the two modules does not regress: `npm run test:coverage`
-- [x] 2.4 Round-trip test fails when the mount-effect `writeStore` is disabled (local check)
+- [x] 2.1 Tests pass: `npm run test:run` — 42f7a3b
+- [x] 2.2 Lint passes: `npm run lint` — 42f7a3b
+- [x] 2.3 Coverage on the two modules does not regress: `npm run test:coverage` — 42f7a3b
+- [x] 2.4 Round-trip test fails when the mount-effect `writeStore` is disabled (local check) — 42f7a3b
 
 #### Manual
 
-- [ ] 2.5 Round-trip assertions use a literal expected list, not a re-read of the store
-- [ ] 2.6 Destroy-on-open test comment names the 2026-06-04 decision as its oracle
+- [x] 2.5 Round-trip assertions use a literal expected list, not a re-read of the store
+- [x] 2.6 Destroy-on-open test comment names the 2026-06-04 decision as its oracle
 
 ### Phase 3: Cookbook + plan sync (docs)
 
