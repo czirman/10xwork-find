@@ -70,5 +70,12 @@ Cykl impl  sklicow
 /10x-review-plan
 /10x-
 
+To ten ich path
+/10x-new - co to
+/10x-research  - researcch
+/10x-plan - planowanie implementacji
+/10x-implement - implementacja
 
-claude --resume 55cf2cb6-a410-4c28-917a-af9b4f5e77d6
+/10x-review-plan
+
+
