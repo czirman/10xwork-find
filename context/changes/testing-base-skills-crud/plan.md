@@ -324,22 +324,22 @@ discard-and-start-fresh.
 
 #### Automated
 
-- [x] 1.1 Tests pass: `npm run test:run`
-- [x] 1.2 Lint passes: `npm run lint`
-- [x] 1.3 Edit-collision test fails when the `isDuplicate(..., id)` guard is removed (local check)
+- [x] 1.1 Tests pass: `npm run test:run` — 1e0c36c
+- [x] 1.2 Lint passes: `npm run lint` — 1e0c36c
+- [x] 1.3 Edit-collision test fails when the `isDuplicate(..., id)` guard is removed (local check) — 1e0c36c
 
 #### Manual
 
-- [ ] 1.4 New `describe` blocks read as FR-002/FR-003 behavior, not implementation restatements
+- [x] 1.4 New `describe` blocks read as FR-002/FR-003 behavior, not implementation restatements — 1e0c36c
 
 ### Phase 2: Persistence & degrade-safely (#4)
 
 #### Automated
 
-- [ ] 2.1 Tests pass: `npm run test:run`
-- [ ] 2.2 Lint passes: `npm run lint`
-- [ ] 2.3 Coverage on the two modules does not regress: `npm run test:coverage`
-- [ ] 2.4 Round-trip test fails when the mount-effect `writeStore` is disabled (local check)
+- [x] 2.1 Tests pass: `npm run test:run`
+- [x] 2.2 Lint passes: `npm run lint`
+- [x] 2.3 Coverage on the two modules does not regress: `npm run test:coverage`
+- [x] 2.4 Round-trip test fails when the mount-effect `writeStore` is disabled (local check)
 
 #### Manual
 

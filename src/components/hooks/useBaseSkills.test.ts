@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach } from "vitest";
+import { describe, it, expect, beforeEach, vi } from "vitest";
 import { act, renderHook } from "@testing-library/react";
 
 import type { SkillsStore } from "@/types";
@@ -170,5 +170,110 @@ describe("removeSkill integrity (#6)", () => {
 
     expect(returned).toBeNull();
     expect(result.current.skills).toEqual(before);
+  });
+});
+
+// Risk #4 — persistence & degrade-safely. Oracle: FR-004 (the base-skills list must
+// survive across sessions) and NFR robustness (the on-device tool must not crash when
+// storage is unavailable). The headline proof is a true round-trip *through a remount*:
+// the write side and read side are tested separately above, but only a mutate → unmount →
+// fresh mount cycle proves a session boundary is actually crossed.
+describe("persistence round-trip (#4)", () => {
+  it("persists an added skill across a simulated restart", () => {
+    const { result, unmount } = renderHook(() => useBaseSkills());
+    act(() => {
+      result.current.addSkill("Java");
+    });
+    // Literal expected list: the name we set, plus the id the hook generated.
+    const expected = [{ id: result.current.skills[0].id, name: "Java" }];
+
+    unmount();
+    const remounted = renderHook(() => useBaseSkills());
+    expect(remounted.result.current.skills).toEqual(expected);
+  });
+
+  it("persists an edited skill across a simulated restart", () => {
+    const { result, unmount } = renderHook(() => useBaseSkills());
+    act(() => {
+      result.current.addSkill("Git");
+    });
+    const id = result.current.skills[0].id;
+    act(() => {
+      result.current.editSkill(id, "GitHub");
+    });
+    const expected = [{ id, name: "GitHub" }];
+
+    unmount();
+    const remounted = renderHook(() => useBaseSkills());
+    expect(remounted.result.current.skills).toEqual(expected);
+  });
+
+  it("persists a deletion across a simulated restart", () => {
+    const { result, unmount } = renderHook(() => useBaseSkills());
+    act(() => {
+      result.current.addSkill("Java");
+      result.current.addSkill("Git");
+    });
+    const javaId = result.current.skills[0].id;
+    const gitId = result.current.skills[1].id;
+    act(() => {
+      result.current.removeSkill(gitId);
+    });
+    const expected = [{ id: javaId, name: "Java" }];
+
+    unmount();
+    const remounted = renderHook(() => useBaseSkills());
+    expect(remounted.result.current.skills).toEqual(expected);
+  });
+});
+
+// Risk #4 — degrade-safely. The discard-and-start-fresh behavior on unreadable stored
+// bytes is a *conscious* product decision, not an accident of `readStore`.
+describe("destroy-on-open is a conscious decision (#4)", () => {
+  // Oracle: the 2026-06-04 decision — unknown/future schema versions and corrupt bytes
+  // are intentionally discarded (start-fresh), per the `SkillsStore` contract comment in
+  // `src/types.ts:17-24` ("reads must tolerate older/unknown shapes by falling back to an
+  // empty list"). Expected values trace to that decision, NOT to `readStore` output.
+  it.each([
+    ["an unknown-version envelope", JSON.stringify({ version: 99, skills: [{ id: "old", name: "Stale" }] })],
+    ["corrupt JSON", "{ not valid json"],
+  ])("opens empty on %s and persists a clean v1 envelope after the first add", (_label, seed) => {
+    window.localStorage.setItem(STORAGE_KEY, seed);
+
+    const { result } = renderHook(() => useBaseSkills());
+    expect(result.current.skills).toEqual([]);
+
+    act(() => {
+      result.current.addSkill("Java");
+    });
+
+    const raw = window.localStorage.getItem(STORAGE_KEY);
+    expect(raw).not.toBeNull();
+    const stored = JSON.parse(raw ?? "") as SkillsStore;
+    expect(stored.version).toBe(1);
+    // Exact-array match: proves the prior unreadable bytes (e.g. the stale `Stale` entry)
+    // are gone by design, replaced by a clean v1 envelope holding only the new add.
+    expect(stored.skills.map((s) => s.name)).toEqual(["Java"]);
+  });
+});
+
+// Risk #4 — NFR robustness: best-effort persistence must not crash CRUD when the
+// on-device store is unavailable (quota exceeded / private mode).
+describe("CRUD survives a storage-write failure (#4)", () => {
+  it("keeps an add in memory without throwing when localStorage.setItem fails", () => {
+    const spy = vi.spyOn(Storage.prototype, "setItem").mockImplementation(() => {
+      throw new DOMException("QuotaExceededError");
+    });
+    try {
+      const { result } = renderHook(() => useBaseSkills());
+      act(() => {
+        expect(result.current.addSkill("Java")).toEqual({ ok: true });
+      });
+      expect(result.current.skills.map((s) => s.name)).toEqual(["Java"]);
+      // Guard against a false green: the throwing path must actually be exercised.
+      expect(spy).toHaveBeenCalled();
+    } finally {
+      spy.mockRestore();
+    }
   });
 });
