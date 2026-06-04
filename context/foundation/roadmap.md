@@ -31,7 +31,7 @@ The riskiest assumption — the single belief that, if false, sinks v1 — is th
 
 | ID   | Change ID                        | Outcome (user can …)                                                        | Prerequisites | PRD refs                              | Status   |
 | ---- | -------------------------------- | --------------------------------------------------------------------------- | ------------- | ------------------------------------- | -------- |
-| F-01 | local-only-app-shell             | (foundation) lands directly in the tool — no login wall, data stays on-device | —             | Access Control, NFR (data-stays-local) | ready    |
+| F-01 | local-only-app-shell             | (foundation) lands directly in the tool — no login wall, data stays on-device | —             | Access Control, NFR (data-stays-local) | done     |
 | S-01 | manage-base-skills               | add, edit, and delete base skills, persisted across sessions on-device      | F-01          | FR-001, FR-002, FR-003, FR-004        | proposed |
 | S-02 | generate-tailored-skills-section | paste a posting → get a copyable tailored skills section + unmatched terms  | S-01          | US-01, FR-005, FR-006, FR-007, FR-008 | proposed |
 
@@ -60,7 +60,7 @@ Foundations below assume these are present and do NOT re-scaffold them.
 - **Blockers:** —
 - **Unknowns:** —
 - **Risk:** Sequenced first because every user-facing slice assumes an unguarded landing page. The risk is scope creep into a full "app shell rebuild" — keep this to bypassing/removing the auth gate and pointing the landing at the tool. Leaving dead middleware/Supabase redirects in place would silently re-gate the app; neutralize, don't half-remove.
-- **Status:** ready
+- **Status:** done (implemented + impl-reviewed; change not yet archived)
 
 ## Slices
 
@@ -92,7 +92,7 @@ Foundations below assume these are present and do NOT re-scaffold them.
 
 | Roadmap ID | Change ID                        | Suggested issue title                                            | Ready for `/10x-plan` | Notes                                                        |
 | ---------- | -------------------------------- | ---------------------------------------------------------------- | --------------------- | ----------------------------------------------------------- |
-| F-01       | local-only-app-shell             | Land the single user directly in the tool — neutralize auth gate | yes                   | Run `/10x-plan local-only-app-shell`. Unlocks north star S-02. |
+| F-01       | local-only-app-shell             | Land the single user directly in the tool — neutralize auth gate | done                  | Implemented + impl-reviewed. Run `/10x-archive local-only-app-shell` to formally close it out. |
 | S-01       | manage-base-skills               | Manage base skills list (add/edit/delete, persist on-device)     | no                    | Prereq F-01 not yet done.                                   |
 | S-02       | generate-tailored-skills-section | Generate tailored CV skills section from a pasted posting        | no                    | Prereq S-01 not yet done; output scope now fixed (unmatched-terms list only). |
 

@@ -64,18 +64,33 @@ To uruchomieni dla niekotrolowanych przeze mnie agentów do impl, Bez mojego naz
 
 
 
-Cykl impl  sklicow
-/10x-plan
-/10x-implement <change-id>.
-/10x-review-plan
-/10x-
+
 
 To ten ich path
 /10x-new - co to
-/10x-research  - researcch
+/10x-research  - research
 /10x-plan - planowanie implementacji
 /10x-implement - implementacja
 
-/10x-review-plan
 
 
+Moja kolejnośc wg ćwiczeń wstępny
+/10x-init - inicjalizacja
+/10x-shape - mętny pomysł
+/10x-prd - jakaś analiza 
+/10x-tech-stack-selector - wybór stacka technicznego
+/10x-bootstrapper - na podstawie techstacka tworzy szkielet
+
+
+/10x-infra-research z context/foundation/tech-stack.md  - reserach infry i chyba tworzy plan deploymentu
+/10x-roadmap - tworzy roadmapę projektu
+
+-----------Cykl
+
+/10x-plan chang-id - planowanie implememantacji
+/10x-implement <change-id> - planowanie implememantacji
+/10x-impl-review
+
+
+Claude podpowiedziąl taki plan
+/10x-new, /10x-research, /10x-plan, /10x-implement,/10x-impl-review,  /10x-archive.  /10x-test-plan --refresh (przy dodaniu impl)

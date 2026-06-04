@@ -93,7 +93,7 @@ as artifacts appear on disk.
 
 | # | Phase name | Goal (one line) | Risks covered | Test types | Status | Change folder |
 |---|------------|-----------------|----------------|------------|--------|---------------|
-| 1 | Base-skills persistence & CRUD integrity | Prove the saved list survives reloads and that add/edit/delete keep it valid | #4, #6 | unit + integration | not started | — |
+| 1 | Base-skills persistence & CRUD integrity | Prove the saved list survives reloads and that add/edit/delete keep it valid | #4, #6 | unit + integration | researched | context/changes/testing-base-skills-crud/ |
 | 2 | On-device data-locality guard | Prove CRUD makes no network request carrying skill or posting data | #5 | integration (network interception) | not started | — |
 | 3 | Quality-gate wiring | Lock the floor: run typecheck + unit/integration in CI on every PR | cross-cutting | gates | not started | — |
 
