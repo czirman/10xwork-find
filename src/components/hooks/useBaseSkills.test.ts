@@ -99,3 +99,76 @@ describe("useBaseSkills", () => {
     expect(result.current.skills).toEqual([]);
   });
 });
+
+// Risk #6 — CRUD integrity. Oracle: FR-002 (edit is a first-class op that must not
+// corrupt the list) and FR-003 (delete removes only the intended item). A CRUD bug
+// here puts a wrong/duplicated/lost skill into the list the user relies on.
+describe("editSkill integrity (#6)", () => {
+  it("rejects renaming a skill onto a name already owned by a different skill, leaving the list unchanged", () => {
+    const { result } = renderHook(() => useBaseSkills());
+    act(() => {
+      result.current.addSkill("Git");
+      result.current.addSkill("Java");
+    });
+    const before = result.current.skills.map((s) => ({ ...s }));
+    const gitId = before[0].id;
+
+    act(() => {
+      // case-insensitive collision with the *other* skill ("Java")
+      expect(result.current.editSkill(gitId, "java").ok).toBe(false);
+    });
+
+    expect(result.current.skills).toEqual(before);
+  });
+
+  it("rejects an empty/whitespace new name on edit, leaving the row unchanged", () => {
+    const { result } = renderHook(() => useBaseSkills());
+    act(() => {
+      result.current.addSkill("Git");
+    });
+    const before = result.current.skills.map((s) => ({ ...s }));
+
+    act(() => {
+      expect(result.current.editSkill(before[0].id, "   ").ok).toBe(false);
+    });
+
+    expect(result.current.skills).toEqual(before);
+  });
+
+  it("edits only the targeted skill and leaves its siblings byte-identical", () => {
+    const { result } = renderHook(() => useBaseSkills());
+    act(() => {
+      result.current.addSkill("Java");
+      result.current.addSkill("Git");
+      result.current.addSkill("Docker");
+    });
+    const [first, middle, last] = result.current.skills.map((s) => ({ ...s }));
+
+    act(() => {
+      expect(result.current.editSkill(middle.id, "GitHub")).toEqual({ ok: true });
+    });
+
+    expect(result.current.skills[0]).toEqual(first);
+    expect(result.current.skills[2]).toEqual(last);
+    expect(result.current.skills[1]).toEqual({ id: middle.id, name: "GitHub" });
+  });
+});
+
+describe("removeSkill integrity (#6)", () => {
+  it("returns null and leaves the list unchanged when the id does not exist", () => {
+    const { result } = renderHook(() => useBaseSkills());
+    act(() => {
+      result.current.addSkill("Java");
+      result.current.addSkill("Git");
+    });
+    const before = result.current.skills.map((s) => ({ ...s }));
+
+    let returned: unknown = "sentinel";
+    act(() => {
+      returned = result.current.removeSkill("does-not-exist");
+    });
+
+    expect(returned).toBeNull();
+    expect(result.current.skills).toEqual(before);
+  });
+});

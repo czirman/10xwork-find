@@ -324,9 +324,9 @@ discard-and-start-fresh.
 
 #### Automated
 
-- [ ] 1.1 Tests pass: `npm run test:run`
-- [ ] 1.2 Lint passes: `npm run lint`
-- [ ] 1.3 Edit-collision test fails when the `isDuplicate(..., id)` guard is removed (local check)
+- [x] 1.1 Tests pass: `npm run test:run`
+- [x] 1.2 Lint passes: `npm run lint`
+- [x] 1.3 Edit-collision test fails when the `isDuplicate(..., id)` guard is removed (local check)
 
 #### Manual
 
