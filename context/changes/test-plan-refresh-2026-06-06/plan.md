@@ -357,25 +357,25 @@ confirmation.
 
 #### Automated
 
-- [x] 2.1 Hook contains lint-staged + astro check + vitest related
-- [x] 2.2 `set -e` present
-- [x] 2.3 Broken staged risk file exits non-zero
-- [x] 2.4 Clean staged risk file exits 0 and runs the related test
+- [x] 2.1 Hook contains lint-staged + astro check + vitest related — 1a36f06
+- [x] 2.2 `set -e` present — 1a36f06
+- [x] 2.3 Broken staged risk file exits non-zero — 1a36f06
+- [x] 2.4 Clean staged risk file exits 0 and runs the related test — 1a36f06
 
 #### Manual
 
-- [ ] 2.5 Clean `git commit` succeeds with astro check + vitest output
-- [ ] 2.6 Commit with failing service-file test is blocked
-- [ ] 2.7 Doc-only commit skips vitest, runs astro check
+- [x] 2.5 Clean `git commit` succeeds with astro check + vitest output — 1a36f06
+- [x] 2.6 Commit with failing service-file test is blocked — 1a36f06
+- [x] 2.7 Doc-only commit skips vitest, runs astro check — 1a36f06
 
 ### Phase 3: Refresh test-plan.md
 
 #### Automated
 
-- [ ] 3.1 Both new phase names present in the doc
-- [ ] 3.2 "not yet in the tree" phrasing removed
-- [ ] 3.3 "config deferred to M3 L3" removed from §5
-- [ ] 3.4 Prettier check passes on the doc
+- [x] 3.1 Both new phase names present in the doc
+- [x] 3.2 "not yet in the tree" phrasing removed
+- [x] 3.3 "config deferred to M3 L3" removed from §5
+- [x] 3.4 Prettier check passes on the doc
 
 #### Manual
 
