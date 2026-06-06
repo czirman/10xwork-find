@@ -1,7 +1,7 @@
 ---
 change_id: generate-tailored-skills-section
 title: Generate tailored skills section
-status: preparing
+status: planned
 created: 2026-06-06
 updated: 2026-06-06
 archived_at: null
