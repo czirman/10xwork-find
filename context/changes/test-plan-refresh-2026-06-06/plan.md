@@ -70,7 +70,7 @@ S-02 and the two phases appear in §3.
 - No CI/CD YAML changes (owned by Module 1 L5 / Module 2 L5).
 - No authoring of cookbook §6.4 / §6.5 — those tests don't exist yet; the doc's
   own convention keeps them "see §3 Phase N".
-- No new test code, no risk-strategy or quality-gate *definition* changes
+- No new test code, no risk-strategy or quality-gate _definition_ changes
   (Lesson 1 territory) — only the S-02 reclassification the §8 trigger mandates.
 - No adding the two new S-02 phases as code (they open their own change folders
   later); this change only lists them in §3.
@@ -301,7 +301,7 @@ confirmation.
 ### Unit Tests:
 
 - None added — this change is config + documentation. Existing tests are the
-  fixtures the hooks *run*, not new coverage.
+  fixtures the hooks _run_, not new coverage.
 
 ### Integration Tests:
 
@@ -342,10 +342,10 @@ confirmation.
 
 #### Automated
 
-- [ ] 1.1 `.claude/settings.json` is valid JSON (`jq .`)
-- [ ] 1.2 No `tsc` reference remains in the hook
-- [ ] 1.3 Hook uses `tool_input.file_path`
-- [ ] 1.4 Simulated bad input exits 2
+- [x] 1.1 `.claude/settings.json` is valid JSON (`jq .`)
+- [x] 1.2 No `tsc` reference remains in the hook
+- [x] 1.3 Hook uses `tool_input.file_path`
+- [x] 1.4 Simulated bad input exits 2
 
 #### Manual
 
