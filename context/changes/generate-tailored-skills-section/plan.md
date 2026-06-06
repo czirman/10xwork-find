@@ -302,21 +302,21 @@ None — no data model change. `SkillsStore`/`STORAGE_KEY` untouched; S-02 only 
 
 #### Manual
 
-- [ ] 1.6 Representative Java posting snippets produce sensible matched/unmatched splits via `matchPosting`
+- [x] 1.6 Representative Java posting snippets produce sensible matched/unmatched splits via `matchPosting` — c349b54
 
 ### Phase 2: Posting-matcher UI, island composition & clipboard
 
 #### Automated
 
-- [x] 2.1 Build passes: `npm run build`
-- [x] 2.2 Type check passes: `npx astro check`
-- [x] 2.3 Lint passes: `npm run lint`
-- [x] 2.4 All tests pass: `npm run test:run` (including refactored `BaseSkillsManager.test.tsx`)
-- [x] 2.5 `PostingMatcher.test.tsx` asserts the clipboard payload equals the exact generated section string
+- [x] 2.1 Build passes: `npm run build` — ac18e53
+- [x] 2.2 Type check passes: `npx astro check` — ac18e53
+- [x] 2.3 Lint passes: `npm run lint` — ac18e53
+- [x] 2.4 All tests pass: `npm run test:run` (including refactored `BaseSkillsManager.test.tsx`) — ac18e53
+- [x] 2.5 `PostingMatcher.test.tsx` asserts the clipboard payload equals the exact generated section string — ac18e53
 
 #### Manual
 
-- [ ] 2.6 Real Java posting → comma-separated section, only declared skills, paste-clean copy
-- [ ] 2.7 Unmatched terms render as a flat deduplicated list
-- [ ] 2.8 Newly added skill is immediately matchable without reload (shared-state proof)
-- [ ] 2.9 Empty-posting, no-declared-skills, and no-match states each show their Polish message; no console/hydration errors
+- [x] 2.6 Real Java posting → comma-separated section, only declared skills, paste-clean copy — ac18e53
+- [x] 2.7 Unmatched terms render as a flat deduplicated list — ac18e53
+- [x] 2.8 Newly added skill is immediately matchable without reload (shared-state proof) — ac18e53
+- [x] 2.9 Empty-posting, no-declared-skills, and no-match states each show their Polish message; no console/hydration errors — ac18e53
