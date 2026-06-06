@@ -33,7 +33,7 @@ The riskiest assumption — the single belief that, if false, sinks v1 — is th
 | ---- | -------------------------------- | --------------------------------------------------------------------------- | ------------- | ------------------------------------- | -------- |
 | F-01 | local-only-app-shell             | (foundation) lands directly in the tool — no login wall, data stays on-device | —             | Access Control, NFR (data-stays-local) | done     |
 | S-01 | manage-base-skills               | add, edit, and delete base skills, persisted across sessions on-device      | F-01          | FR-001, FR-002, FR-003, FR-004        | done     |
-| S-02 | generate-tailored-skills-section | paste a posting → get a copyable tailored skills section + unmatched terms  | S-01          | US-01, FR-005, FR-006, FR-007, FR-008 | proposed |
+| S-02 | generate-tailored-skills-section | paste a posting → get a copyable tailored skills section + unmatched terms  | S-01          | US-01, FR-005, FR-006, FR-007, FR-008 | done     |
 
 ## Baseline
 
@@ -86,7 +86,7 @@ Foundations below assume these are present and do NOT re-scaffold them.
 - **Blockers:** —
 - **Unknowns:** — (output scope resolved 2026-05-30: v1 shows only the matched skills section + unmatched-terms list, per FR-007; per-term breakdown and any in-app flagging deferred to v2 — see ## Parked)
 - **Risk:** This is the validation milestone and carries the core hypothesis: the hand-curated synonym map may map < 75% of real posting terms (FR-006 accepts this risk; the 75% Success Criterion is the empirical test, LLM is the v2 fallback). Sequenced last because it consumes S-01's data and the F-01 shell. Acceptance criteria are now fixed (unmatched-terms list only), so the slice is plannable once S-01 lands.
-- **Status:** proposed
+- **Status:** done
 
 ## Backlog Handoff
 
@@ -119,3 +119,4 @@ None open. All resolved 2026-05-30:
 
 - **S-01: User can add, edit, and delete base skills in a personal list that persists between sessions, stored on-device.** — Archived 2026-06-06 → `context/archive/2026-05-31-manage-base-skills/`. Lesson: —.
 - **F-01: (foundation) the single user opens the app and is immediately in the tool — the Supabase auth gate (middleware redirect, signin/signup flow) is neutralized and the landing page is the tool, not the starter Welcome.** — Archived 2026-06-06 → `context/archive/2026-05-30-local-only-app-shell/`. Lesson: —.
+- **S-02: User can paste a job posting's raw skill requirements and get back a CV-ready skills section (built only from their matched base skills) plus a separate list of unmatched posting terms, copyable to clipboard.** — Archived 2026-06-06 → `context/archive/2026-06-06-generate-tailored-skills-section/`. Lesson: —.

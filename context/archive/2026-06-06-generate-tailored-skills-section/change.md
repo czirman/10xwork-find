@@ -1,10 +1,10 @@
 ---
 change_id: generate-tailored-skills-section
 title: Generate tailored skills section
-status: impl_reviewed
+status: archived
 created: 2026-06-06
 updated: 2026-06-06
-archived_at: null
+archived_at: 2026-06-06T16:33:59Z
 ---
 
 ## Notes
