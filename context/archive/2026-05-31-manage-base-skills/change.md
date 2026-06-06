@@ -1,10 +1,10 @@
 ---
 change_id: manage-base-skills
 title: Manage base skills list (add/edit/delete, persist on-device)
-status: impl_reviewed
+status: archived
 created: 2026-05-31
-updated: 2026-05-31
-archived_at: null
+updated: 2026-06-06
+archived_at: 2026-06-06T14:33:42Z
 ---
 
 ## Notes

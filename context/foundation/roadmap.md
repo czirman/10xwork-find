@@ -3,7 +3,7 @@ project: 10xwork-find
 version: 1
 status: draft
 created: 2026-05-30
-updated: 2026-05-30
+updated: 2026-06-06
 prd_version: 1
 main_goal: market-feedback
 top_blocker: none
@@ -32,7 +32,7 @@ The riskiest assumption — the single belief that, if false, sinks v1 — is th
 | ID   | Change ID                        | Outcome (user can …)                                                        | Prerequisites | PRD refs                              | Status   |
 | ---- | -------------------------------- | --------------------------------------------------------------------------- | ------------- | ------------------------------------- | -------- |
 | F-01 | local-only-app-shell             | (foundation) lands directly in the tool — no login wall, data stays on-device | —             | Access Control, NFR (data-stays-local) | done     |
-| S-01 | manage-base-skills               | add, edit, and delete base skills, persisted across sessions on-device      | F-01          | FR-001, FR-002, FR-003, FR-004        | proposed |
+| S-01 | manage-base-skills               | add, edit, and delete base skills, persisted across sessions on-device      | F-01          | FR-001, FR-002, FR-003, FR-004        | done     |
 | S-02 | generate-tailored-skills-section | paste a posting → get a copyable tailored skills section + unmatched terms  | S-01          | US-01, FR-005, FR-006, FR-007, FR-008 | proposed |
 
 ## Baseline
@@ -74,7 +74,7 @@ Foundations below assume these are present and do NOT re-scaffold them.
 - **Blockers:** —
 - **Unknowns:** —
 - **Risk:** Sequenced before S-02 because the matching engine has nothing to map without a saved base-skills list. The risk is over-engineering persistence — the PRD's "data stays local" + single-user scope means browser-local storage is sufficient; do not reach for the scaffolded Supabase layer.
-- **Status:** proposed
+- **Status:** done
 
 ### S-02: Generate tailored skills section from a posting
 
@@ -117,4 +117,4 @@ None open. All resolved 2026-05-30:
 
 ## Done
 
-(Empty on first generation. `/10x-archive` appends entries here — and flips an item's `Status` to `done` — when a change whose `Change ID` matches the item is archived. Do NOT pre-populate.)
+- **S-01: User can add, edit, and delete base skills in a personal list that persists between sessions, stored on-device.** — Archived 2026-06-06 → `context/archive/2026-05-31-manage-base-skills/`. Lesson: —.
