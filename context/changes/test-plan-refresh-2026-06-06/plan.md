@@ -342,25 +342,25 @@ confirmation.
 
 #### Automated
 
-- [x] 1.1 `.claude/settings.json` is valid JSON (`jq .`)
-- [x] 1.2 No `tsc` reference remains in the hook
-- [x] 1.3 Hook uses `tool_input.file_path`
-- [x] 1.4 Simulated bad input exits 2
+- [x] 1.1 `.claude/settings.json` is valid JSON (`jq .`) — dec0d37
+- [x] 1.2 No `tsc` reference remains in the hook — dec0d37
+- [x] 1.3 Hook uses `tool_input.file_path` — dec0d37
+- [x] 1.4 Simulated bad input exits 2 — dec0d37
 
 #### Manual
 
-- [ ] 1.5 Fixable style issue auto-fixed in agent session
-- [ ] 1.6 Unfixable lint error reaches the agent and is corrected next turn
-- [ ] 1.7 Non-source file edit does not invoke eslint
+- [x] 1.5 Fixable style issue auto-fixed in agent session — dec0d37
+- [x] 1.6 Unfixable lint error reaches the agent and is corrected next turn — dec0d37
+- [x] 1.7 Non-source file edit does not invoke eslint — dec0d37
 
 ### Phase 2: Strengthen the pre-commit gate
 
 #### Automated
 
-- [ ] 2.1 Hook contains lint-staged + astro check + vitest related
-- [ ] 2.2 `set -e` present
-- [ ] 2.3 Broken staged risk file exits non-zero
-- [ ] 2.4 Clean staged risk file exits 0 and runs the related test
+- [x] 2.1 Hook contains lint-staged + astro check + vitest related
+- [x] 2.2 `set -e` present
+- [x] 2.3 Broken staged risk file exits non-zero
+- [x] 2.4 Clean staged risk file exits 0 and runs the related test
 
 #### Manual
 

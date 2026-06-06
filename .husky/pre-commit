@@ -1,1 +1,7 @@
+set -e
 npx lint-staged
+npx astro check
+FILES=$(git diff --cached --name-only --diff-filter=ACM | grep -E '^src/(lib/services|components)/' || true)
+if [ -n "$FILES" ]; then
+  npx vitest related $FILES --run
+fi
