@@ -25,5 +25,22 @@
     "deny": [
       "Bash(rm -rf *)"
     ]
+  },
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo '==> Uruchamiam linter po edycji agenta...'; jq -r '.inputs.path // .inputs.filePath' | xargs npx eslint --fix"
+          },
+          {
+            "type": "command",
+            "command": "echo '==> Uruchamiam sprawdzanie typów (typecheck)...'; npx tsc --noEmit"
+          }
+        ]
+      }
+    ]
   }
 }
