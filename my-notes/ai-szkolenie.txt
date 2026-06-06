@@ -61,3 +61,36 @@ git worktree add, zalecaja tego  jako worktree per slice. Obadać jak uzywac to 
 
 /goal Use 10x-implement skill to implement all phases of context/changes/ux-improvements/plan.md. Each phase is committed separately. All phases marked done in plan progress. Stop after 20 turns if not complete.
 To uruchomieni dla niekotrolowanych przeze mnie agentów do impl, Bez mojego nazdrou. Nadaje sie do łatwych mierzalnych zadan
+
+
+
+
+
+To ten ich path
+/10x-new - co to
+/10x-research  - research
+/10x-plan - planowanie implementacji
+/10x-implement - implementacja
+
+
+
+Moja kolejnośc wg ćwiczeń wstępny
+/10x-init - inicjalizacja
+/10x-shape - mętny pomysł
+/10x-prd - jakaś analiza 
+/10x-tech-stack-selector - wybór stacka technicznego
+/10x-bootstrapper - na podstawie techstacka tworzy szkielet
+
+
+/10x-infra-research z context/foundation/tech-stack.md  - reserach infry i chyba tworzy plan deploymentu
+/10x-roadmap - tworzy roadmapę projektu
+
+-----------Cykl
+
+/10x-plan chang-id - planowanie implememantacji
+/10x-implement <change-id> - planowanie implememantacji
+/10x-impl-review
+
+
+Claude podpowiedziąl taki plan
+/10x-new, /10x-research, /10x-plan, /10x-implement,/10x-impl-review,  /10x-archive.  /10x-test-plan --refresh (przy dodaniu impl)
