@@ -286,6 +286,13 @@ None — no data model change. `SkillsStore`/`STORAGE_KEY` untouched; S-02 only 
 - Test patterns: `context/archive/2026-06-04-testing-base-skills-crud/`
 - Test-plan risks: `context/foundation/test-plan.md` §2 (#1, #2, #3, #7), §6.4–6.5 (deferred phases)
 
+## Addendum (impl-review, 2026-06-06)
+
+Two implementation adaptations to the Phase 1 matcher, recorded so the plan stays the source of truth (see `reviews/impl-review.md` F1, F2):
+
+- **`matchPosting` signature.** Shipped as `matchPosting(skills, postingText, index: SynonymIndex)` — a required prebuilt index rather than the originally-specified optional `map?: SynonymMap`, plus a new exported `buildSynonymIndex(map)` helper. This breaks a circular import between `matching.ts` and `synonym-map.ts` (the latter imports `matchKey`/`buildSynonymIndex` from the former) and builds the inverted index once at module load instead of per call. `SYNONYM_INDEX` is built in `synonym-map.ts` and passed in by `PostingMatcher`.
+- **Slash-compound handling.** The hybrid containment pass (`canonicalsForTerm`) also checks a slash-split variant of the term, so `Docker/Kubernetes`, `Java/J2EE` etc. resolve each side, while the exact-lookup-first rule keeps slash-bearing canonicals like `CI/CD` intact. Covered by regression tests. This extends the plan's tokenizer note ("do not split on `/ + # .`") in service of the FR-006 ≥75% goal.
+
 ## Progress
 
 > Convention: `- [ ]` pending, `- [x]` done. Append ` — <commit sha>` when a step lands. Do not rename step titles. See `references/progress-format.md`.

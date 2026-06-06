@@ -71,6 +71,7 @@ export default function PostingMatcher({ skills }: PostingMatcherProps) {
             if (error) setError(null);
           }}
           aria-label="Treść oferty pracy"
+          aria-invalid={error ? true : undefined}
           placeholder="Wklej tutaj wymagania z oferty pracy…"
           rows={8}
           className={cn(
