@@ -294,11 +294,11 @@ None — no data model change. `SkillsStore`/`STORAGE_KEY` untouched; S-02 only 
 
 #### Automated
 
-- [ ] 1.1 Build passes: `npm run build`
-- [ ] 1.2 Type check passes: `npx astro check`
-- [ ] 1.3 Lint passes: `npm run lint`
-- [ ] 1.4 Unit tests pass: `npm run test:run`
-- [ ] 1.5 `matching.test.ts` covers matchKey equivalence classes, hybrid tokenization, matched/unmatched classification, the output⊆declared invariant, and the golden output format
+- [x] 1.1 Build passes: `npm run build`
+- [x] 1.2 Type check passes: `npx astro check`
+- [x] 1.3 Lint passes: `npm run lint`
+- [x] 1.4 Unit tests pass: `npm run test:run`
+- [x] 1.5 `matching.test.ts` covers matchKey equivalence classes, hybrid tokenization, matched/unmatched classification, the output⊆declared invariant, and the golden output format
 
 #### Manual
 
