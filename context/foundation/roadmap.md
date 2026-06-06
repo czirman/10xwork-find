@@ -60,7 +60,7 @@ Foundations below assume these are present and do NOT re-scaffold them.
 - **Blockers:** —
 - **Unknowns:** —
 - **Risk:** Sequenced first because every user-facing slice assumes an unguarded landing page. The risk is scope creep into a full "app shell rebuild" — keep this to bypassing/removing the auth gate and pointing the landing at the tool. Leaving dead middleware/Supabase redirects in place would silently re-gate the app; neutralize, don't half-remove.
-- **Status:** done (implemented + impl-reviewed; change not yet archived)
+- **Status:** done
 
 ## Slices
 
@@ -118,3 +118,4 @@ None open. All resolved 2026-05-30:
 ## Done
 
 - **S-01: User can add, edit, and delete base skills in a personal list that persists between sessions, stored on-device.** — Archived 2026-06-06 → `context/archive/2026-05-31-manage-base-skills/`. Lesson: —.
+- **F-01: (foundation) the single user opens the app and is immediately in the tool — the Supabase auth gate (middleware redirect, signin/signup flow) is neutralized and the landing page is the tool, not the starter Welcome.** — Archived 2026-06-06 → `context/archive/2026-05-30-local-only-app-shell/`. Lesson: —.
