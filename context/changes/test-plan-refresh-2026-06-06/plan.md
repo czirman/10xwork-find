@@ -372,13 +372,13 @@ confirmation.
 
 #### Automated
 
-- [x] 3.1 Both new phase names present in the doc
-- [x] 3.2 "not yet in the tree" phrasing removed
-- [x] 3.3 "config deferred to M3 L3" removed from §5
-- [x] 3.4 Prettier check passes on the doc
+- [x] 3.1 Both new phase names present in the doc — 7020825
+- [x] 3.2 "not yet in the tree" phrasing removed — 7020825
+- [x] 3.3 "config deferred to M3 L3" removed from §5 — 7020825
+- [x] 3.4 Prettier check passes on the doc — 7020825
 
 #### Manual
 
-- [ ] 3.5 §2/§3 read as live with phases front-of-queue in correct order
-- [ ] 3.6 §5 hook row matches shipped Phases 1–2
-- [ ] 3.7 No phase-count / cross-reference contradictions remain
+- [x] 3.5 §2/§3 read as live with phases front-of-queue in correct order — 7020825
+- [x] 3.6 §5 hook row matches shipped Phases 1–2 — 7020825
+- [x] 3.7 No phase-count / cross-reference contradictions remain — 7020825

@@ -1,7 +1,7 @@
 ---
 change_id: test-plan-refresh-2026-06-06
 title: Test plan refresh 2026 06 06
-status: implementing
+status: implemented
 created: 2026-06-06
 updated: 2026-06-06
 archived_at: null
@@ -10,6 +10,7 @@ archived_at: null
 ## Notes
 
 Resolved intent (2026-06-06): **Both** —
+
 1. Refresh `context/foundation/test-plan.md` now that S-02
    (`generate-tailored-skills-section`) has shipped (matching.ts, synonym-map.ts,
    PostingMatcher.tsx exist). The §8 refresh trigger "when S-02 ships" is met:
