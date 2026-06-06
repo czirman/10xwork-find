@@ -294,11 +294,11 @@ None — no data model change. `SkillsStore`/`STORAGE_KEY` untouched; S-02 only 
 
 #### Automated
 
-- [x] 1.1 Build passes: `npm run build`
-- [x] 1.2 Type check passes: `npx astro check`
-- [x] 1.3 Lint passes: `npm run lint`
-- [x] 1.4 Unit tests pass: `npm run test:run`
-- [x] 1.5 `matching.test.ts` covers matchKey equivalence classes, hybrid tokenization, matched/unmatched classification, the output⊆declared invariant, and the golden output format
+- [x] 1.1 Build passes: `npm run build` — c349b54
+- [x] 1.2 Type check passes: `npx astro check` — c349b54
+- [x] 1.3 Lint passes: `npm run lint` — c349b54
+- [x] 1.4 Unit tests pass: `npm run test:run` — c349b54
+- [x] 1.5 `matching.test.ts` covers matchKey equivalence classes, hybrid tokenization, matched/unmatched classification, the output⊆declared invariant, and the golden output format — c349b54
 
 #### Manual
 
@@ -308,11 +308,11 @@ None — no data model change. `SkillsStore`/`STORAGE_KEY` untouched; S-02 only 
 
 #### Automated
 
-- [ ] 2.1 Build passes: `npm run build`
-- [ ] 2.2 Type check passes: `npx astro check`
-- [ ] 2.3 Lint passes: `npm run lint`
-- [ ] 2.4 All tests pass: `npm run test:run` (including refactored `BaseSkillsManager.test.tsx`)
-- [ ] 2.5 `PostingMatcher.test.tsx` asserts the clipboard payload equals the exact generated section string
+- [x] 2.1 Build passes: `npm run build`
+- [x] 2.2 Type check passes: `npx astro check`
+- [x] 2.3 Lint passes: `npm run lint`
+- [x] 2.4 All tests pass: `npm run test:run` (including refactored `BaseSkillsManager.test.tsx`)
+- [x] 2.5 `PostingMatcher.test.tsx` asserts the clipboard payload equals the exact generated section string
 
 #### Manual
 

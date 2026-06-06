@@ -3,6 +3,17 @@ import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
 import BaseSkillsManager from "./BaseSkillsManager";
+import { useBaseSkills } from "@/components/hooks/useBaseSkills";
+
+/**
+ * Drives the now-presentational manager through a real `useBaseSkills` instance,
+ * exactly as the `SkillsTool` parent does — so these tests still exercise the
+ * real validation/dedup/persistence path.
+ */
+function Harness() {
+  const baseSkills = useBaseSkills();
+  return <BaseSkillsManager {...baseSkills} />;
+}
 
 beforeEach(() => {
   window.localStorage.clear();
@@ -15,13 +26,13 @@ async function addSkill(user: ReturnType<typeof userEvent.setup>, name: string) 
 
 describe("BaseSkillsManager", () => {
   it("shows the empty state initially", () => {
-    render(<BaseSkillsManager />);
+    render(<Harness />);
     expect(screen.getByText(/Nie masz jeszcze/i)).toBeInTheDocument();
   });
 
   it("adds a skill, which appears in the list", async () => {
     const user = userEvent.setup();
-    render(<BaseSkillsManager />);
+    render(<Harness />);
 
     await addSkill(user, "Java");
 
@@ -31,7 +42,7 @@ describe("BaseSkillsManager", () => {
 
   it("edits a skill in place", async () => {
     const user = userEvent.setup();
-    render(<BaseSkillsManager />);
+    render(<Harness />);
     await addSkill(user, "Git");
 
     await user.click(screen.getByRole("button", { name: /^Edytuj/ }));
@@ -46,7 +57,7 @@ describe("BaseSkillsManager", () => {
 
   it("deletes a skill, then restores it via Cofnij", async () => {
     const user = userEvent.setup();
-    render(<BaseSkillsManager />);
+    render(<Harness />);
     await addSkill(user, "Java");
 
     await user.click(screen.getByRole("button", { name: /^Usuń/ }));
@@ -59,7 +70,7 @@ describe("BaseSkillsManager", () => {
 
   it("rejects a case-insensitive duplicate with an inline error and no new row", async () => {
     const user = userEvent.setup();
-    render(<BaseSkillsManager />);
+    render(<Harness />);
     await addSkill(user, "Git");
     await addSkill(user, "git");
 

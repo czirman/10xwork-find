@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useBaseSkills } from "@/components/hooks/useBaseSkills";
+import type { UseBaseSkills } from "@/components/hooks/useBaseSkills";
 import type { Skill } from "@/types";
 
 /** How long the "Cofnij" (undo) affordance stays available after a delete. */
@@ -19,9 +19,7 @@ interface PendingUndo {
  * this component owns only transient UI state. Mounted client-only (see
  * index.astro) so it never touches localStorage during SSR.
  */
-export default function BaseSkillsManager() {
-  const { skills, addSkill, editSkill, removeSkill, restoreSkill } = useBaseSkills();
-
+export default function BaseSkillsManager({ skills, addSkill, editSkill, removeSkill, restoreSkill }: UseBaseSkills) {
   const [addValue, setAddValue] = useState("");
   const [addError, setAddError] = useState<string | null>(null);
 

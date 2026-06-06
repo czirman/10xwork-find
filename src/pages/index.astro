@@ -1,6 +1,6 @@
 ---
 import Layout from "@/layouts/Layout.astro";
-import BaseSkillsManager from "@/components/BaseSkillsManager.tsx";
+import SkillsTool from "@/components/SkillsTool.tsx";
 ---
 
 <Layout title="10xwork-find">
@@ -10,9 +10,9 @@ import BaseSkillsManager from "@/components/BaseSkillsManager.tsx";
       <p class="text-sm text-gray-500">Wklej wymagania z oferty pracy i otrzymaj sekcję umiejętności gotową do CV.</p>
     </header>
 
-    <!-- Tool surface. Base-skills management (S-01) mounts here; posting matching (S-02) follows. -->
+    <!-- Tool surface. Single island composes base-skills management (S-01) + posting matching (S-02). -->
     <section id="app-root" aria-label="Narzędzie">
-      <BaseSkillsManager client:only="react" />
+      <SkillsTool client:only="react" />
     </section>
   </main>
 </Layout>
