@@ -58,9 +58,11 @@ function writeStore(skills: Skill[]): void {
   if (typeof window === "undefined") return;
   try {
     window.localStorage.setItem(STORAGE_KEY, JSON.stringify({ version: 1, skills }));
-  } catch {
+  } catch (err) {
     // Best-effort persistence: quota exceeded or storage disabled
-    // (e.g. private mode) must not crash the persist effect.
+    // (e.g. private mode) must not crash the persist effect — but the
+    // silent data loss must still be observable for diagnosis.
+    console.warn("useBaseSkills: failed to persist base-skills to localStorage", err);
   }
 }
 
