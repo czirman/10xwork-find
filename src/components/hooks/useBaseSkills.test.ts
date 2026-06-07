@@ -276,4 +276,35 @@ describe("CRUD survives a storage-write failure (#4)", () => {
       spy.mockRestore();
     }
   });
+
+  // A swallowed write means a user silently loses data: surviving the crash is necessary
+  // but not sufficient — the failure must also be observable so it can be diagnosed.
+  it("emits a diagnostic (console.warn/error) when a persistence write fails", () => {
+    const setItemSpy = vi.spyOn(Storage.prototype, "setItem").mockImplementation(() => {
+      throw new DOMException("QuotaExceededError");
+    });
+    const warnSpy = vi.spyOn(console, "warn").mockImplementation(() => undefined);
+    const errorSpy = vi.spyOn(console, "error").mockImplementation(() => undefined);
+    try {
+      const { result } = renderHook(() => useBaseSkills());
+      // Isolate the assertion to the add's write path: discard any mount-time noise so a
+      // false green can't slip in from incidental React/jsdom logging during render.
+      setItemSpy.mockClear();
+      warnSpy.mockClear();
+      errorSpy.mockClear();
+
+      act(() => {
+        result.current.addSkill("Java");
+      });
+
+      // Guard against a false green: the throwing write path must actually be exercised.
+      expect(setItemSpy).toHaveBeenCalled();
+      // The diagnostic signal the silent catch in writeStore() currently omits.
+      expect(warnSpy.mock.calls.length + errorSpy.mock.calls.length).toBeGreaterThan(0);
+    } finally {
+      setItemSpy.mockRestore();
+      warnSpy.mockRestore();
+      errorSpy.mockRestore();
+    }
+  });
 });
