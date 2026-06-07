@@ -94,3 +94,12 @@ Moja kolejnośc wg ćwiczeń wstępny
 
 Claude podpowiedziąl taki plan
 /10x-new, /10x-research, /10x-plan, /10x-implement,/10x-impl-review,  /10x-archive.  /10x-test-plan --refresh (przy dodaniu impl)
+
+/10x-plan, /10x-implement,/10x-impl-review - podoby cykld dla testów po --refresh, nie wiem czy nie taki sam 
+
+ /10x-archive test-plan-refresh-2026-06-06
+ 
+ 
+ 
+ 
+ pw http://localhost:4322 - alias do playwrighta bo cos sie jebał
