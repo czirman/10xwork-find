@@ -1,6 +1,11 @@
 {
   "permissions": {
     "allow": [
+      "Bash(echo *)",
+      "Bash(grep *)",
+      "Bash(egrep *)",
+      "Bash(fgrep *)",
+      "Bash(git grep *)",
       "Bash(npm *)",
       "Bash(npx *)",
       "Bash(node *)",
