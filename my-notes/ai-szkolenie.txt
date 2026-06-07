@@ -103,3 +103,18 @@ Claude podpowiedziąl taki plan
  
  
  pw http://localhost:4322 - alias do playwrighta bo cos sie jebał
+npx playwright test to działa
+
+
+
+console.warn(...) + captureConsoleIntegration. daje że sentry widzi te warningi
+sentry
+
+
+to szuka warn w  logach. pytanie czy potrzebne sentry do tego
+npx wrangler pages deployment tail --project-name 10xcards-30 \
+  --format json --search "update_failed"
+
+
+To warto zapamietać z leksji m3l5. Sugerują zberanie dowodów błędu z wielu różnych źródeł, u nich to jest tep plywright i sentry.
+Po to aby łatwiej było poprawić bład bo przy tego typu błedach (opisanych w lekcji) trudno a czasami nawet się nie da odtworzyć lokalnie
