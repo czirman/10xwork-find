@@ -10,7 +10,6 @@
       "Bash(npx *)",
       "Bash(node *)",
       "Bash(git add *)",
-      "Bash(git commit *)",
       "Bash(git diff *)",
       "Bash(git log *)",
       "Bash(git status *)",
@@ -21,15 +20,8 @@
       "Edit",
       "Write"
     ],
-    "ask": [
-      "Bash(curl *)",
-      "Bash(wget *)",
-      "Bash(git push *)",
-      "Bash(git push)"
-    ],
-    "deny": [
-      "Bash(rm -rf *)"
-    ]
+    "ask": ["Bash(curl *)", "Bash(wget *)", "Bash(git push *)", "Bash(git push)"],
+    "deny": ["Bash(rm -rf *)", "Bash(git commit *)"]
   },
   "hooks": {
     "PostToolUse": [
