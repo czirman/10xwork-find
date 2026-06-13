@@ -1,0 +1,4 @@
+# Copy to `.dev.vars` (gitignored) and set a value for local dev.
+# In production this is a Cloudflare Worker secret: `wrangler secret put APP_PASSPHRASE`.
+# A missing/unset value fails closed — the app gates everyone out.
+APP_PASSPHRASE=
