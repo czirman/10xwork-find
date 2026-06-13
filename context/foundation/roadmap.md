@@ -3,7 +3,7 @@ project: 10xwork-find
 version: 2
 status: active
 created: 2026-05-30
-updated: 2026-06-09
+updated: 2026-06-13
 prd_version: 2
 main_goal: market-feedback
 top_blocker: none
@@ -32,7 +32,7 @@ The core hypothesis — the single belief that, if false, sinks v1 (the "core hy
 | F-01 | local-only-app-shell             | (foundation) lands directly in the tool — no login wall, data stays on-device   | —             | Access Control, NFR (data-stays-local) | done   |
 | S-01 | manage-base-skills               | add, edit, and delete base skills, persisted across sessions on-device          | F-01          | FR-001, FR-002, FR-003, FR-004         | done   |
 | S-02 | generate-tailored-skills-section | paste a posting → get a copyable tailored skills section + unmatched terms      | S-01          | US-01, FR-005, FR-006, FR-007, FR-008  | done   |
-| S-03 | passphrase-access-gate           | unlock the public app with a shared passphrase; visitors without it can't enter | F-01          | FR-009, Access Control                 | ready  |
+| S-03 | passphrase-access-gate           | unlock the public app with a shared passphrase; visitors without it can't enter | F-01          | FR-009, Access Control                 | done   |
 
 ## Baseline
 
@@ -99,7 +99,7 @@ Foundations below assume these are present and do NOT re-scaffold them.
 - **Blockers:** —
 - **Unknowns:** —
 - **Risk:** The app is **currently live publicly with no gate**, so the only thing protecting it is obscurity of the URL — this slice closes a real exposure on a shipped tool, which is why it is the sole remaining work. The chief design risk is scope creep back into account-based auth (the removed Supabase module); keep it to one edge-checked shared passphrase per FR-009 so the "data stays local" guarantee survives intact (no server-side user records). How/where the passphrase is configured (Worker secret vs env) is a `/10x-plan` implementation detail, not a roadmap blocker.
-- **Status:** ready
+- **Status:** done
 
 ## Backlog Handoff
 
@@ -131,3 +131,4 @@ None open. (All v1 questions resolved 2026-05-30; the v2 access-gate scope is fi
 - **S-01: User can add, edit, and delete base skills in a personal list that persists between sessions, stored on-device.** — Archived 2026-06-06 → `context/archive/2026-05-31-manage-base-skills/`. Lesson: —.
 - **F-01: (foundation) the single user opens the app and is immediately in the tool — the Supabase auth gate is neutralized and the landing page is the tool, not the starter Welcome.** — Archived 2026-06-06 → `context/archive/2026-05-30-local-only-app-shell/`. Lesson: —.
 - **S-02: User can paste a job posting's raw skill requirements and get back a CV-ready skills section (built only from their matched base skills) plus a separate list of unmatched posting terms, copyable to clipboard.** — Archived 2026-06-06 → `context/archive/2026-06-06-generate-tailored-skills-section/`. Lesson: —.
+- **S-03: User can unlock the publicly-deployed app by entering the single shared passphrase; anyone reaching the URL without it is stopped at the gate and cannot use the tool.** — Archived 2026-06-13 → `context/archive/2026-06-09-passphrase-access-gate/`. Lesson: —.
