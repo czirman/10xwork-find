@@ -118,3 +118,6 @@ npx wrangler pages deployment tail --project-name 10xcards-30 \
 
 To warto zapamietać z leksji m3l5. Sugerują zberanie dowodów błędu z wielu różnych źródeł, u nich to jest tep plywright i sentry.
 Po to aby łatwiej było poprawić bład bo przy tego typu błedach (opisanych w lekcji) trudno a czasami nawet się nie da odtworzyć lokalnie
+
+
+claude --resume d91a16a7-b90a-4626-8096-3a116ceb1815

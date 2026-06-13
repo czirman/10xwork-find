@@ -11,7 +11,7 @@ This is roadmap slice **S-03** (roadmap v2), tracing to PRD v2 **FR-009** and th
 - **Astro 6 SSR** (`output: "server"` in `astro.config.mjs`) on the **Cloudflare adapter** (`@astrojs/cloudflare` 13.5.0). Server code runs inside the Worker, so middleware executes at the edge on every request — the correct place for the gate.
 - **No middleware exists** — `src/middleware.ts` is absent. Clean insertion point; nothing to refactor or neutralize (the old Supabase auth module was already fully removed: no auth files, no `@supabase/*` deps, no API routes).
 - **One page**: `src/pages/index.astro` renders the `SkillsTool.tsx` React island. There are no API routes yet (`src/pages/api/` does not exist) — the unlock POST handler will be the first.
-- **Cloudflare env access**: secrets/vars are reachable in SSR via `context.locals.runtime.env` (the `@astrojs/cloudflare` convention). Local dev reads from a `.dev.vars` file.
+- **Cloudflare env access**: in `@astrojs/cloudflare` 13.5.0 + Astro 6, `Astro.locals.runtime.env` was REMOVED. Secrets/vars are read via `import { env } from "cloudflare:workers"`, accessed at request time inside the handler. Local dev (`astro dev` runs real workerd) reads `.dev.vars` automatically — no `platformProxy` option exists or is needed (verified: env populated at request time in dev). The env shape is typed in `src/env.d.ts` via `declare module "cloudflare:workers"`.
 - **Web Crypto** (`crypto.subtle`) is available in the Workers runtime and in Node 22 dev — used for the SHA-256 token; no third-party crypto dependency needed.
 - **Test tooling present**: Vitest (`npm run test:run`) + Playwright (`@playwright/test`).
 - The app is **currently live and world-open** at `https://10xwork-find.service-mak.workers.dev` — this plan closes that exposure.
@@ -23,7 +23,7 @@ Visiting any route on the deployed app without a valid session cookie shows the 
 ### Key Discoveries:
 
 - Astro middleware signature: `export const onRequest = defineMiddleware((context, next) => …)` in `src/middleware.ts`, auto-discovered by Astro. (`astro.config.mjs:8` confirms SSR + Cloudflare adapter.)
-- Env in SSR: `context.locals.runtime.env.APP_PASSPHRASE` under the Cloudflare adapter; type it by extending `App.Locals` / `Astro.locals` in `src/env.d.ts`.
+- Env in SSR: `import { env } from "cloudflare:workers"`, then read `env.APP_PASSPHRASE` at request time (adapter v13 removed `locals.runtime.env`); typed via `declare module "cloudflare:workers"` in `src/env.d.ts`.
 - Cookies: Astro exposes `context.cookies.get/set` with `httpOnly`, `secure`, `sameSite`, `maxAge`, `path` options — no manual `Set-Cookie` string building.
 - Static assets and Astro internals must be allowlisted so the gate doesn't break its own unlock page styling (paths under `/_astro/`, `/_image`, `favicon`, etc.).
 
@@ -42,9 +42,9 @@ A pure verification module computes a session token = `SHA-256(passphrase)` (hex
 ## Critical Implementation Details
 
 - **Constant-time compare**: do not use `===` on the token/cookie. Compare via a constant-time routine (equal-length byte comparison that does not early-return) so a network attacker can't time-slice the token. The token is fixed-length hex (64 chars), which makes constant-time comparison straightforward.
-- **Allowlist ordering in middleware**: the unlock page (`/unlock`), the unlock endpoint (`/api/unlock`), and static assets (`/_astro/`, `/_image`, `/favicon*`) must bypass the gate, or the unlock page renders unstyled and the POST can never succeed (redirect loop). Check the allowlist before the cookie check.
+- **Allowlist ordering in middleware**: the unlock endpoint (`/api/unlock`) and static assets (`/_astro/`, `/_image`, `/favicon*`) bypass the gate without a token check, or the unlock page renders unstyled and the POST can never succeed (redirect loop). Check the allowlist first. NOTE (impl): `/unlock` itself is deliberately NOT allowlisted — it needs the session check so an already-unlocked visitor is bounced home; the whole decision lives in the pure `evaluateGate` (returns `allow`/`to-unlock`/`to-home`), so the redirect is not in `.astro` frontmatter (which avoids a type-aware-lint crash on frontmatter `return`).
 - **Cookie attributes**: `httpOnly: true`, `secure: import.meta.env.PROD`, `sameSite: "lax"`, `path: "/"`, `maxAge: 60*60*24*30`. Do **not** hardcode `secure: true`: a `Secure` cookie is browser-restricted over `http://localhost`, and Playwright's Chromium against `astro dev`/`preview` (HTTP) may silently drop it — which would make Phase 2 manual checks and the Phase 3 e2e fail like a logic bug when the logic is fine. Gating `secure` on `PROD` keeps it set on the HTTPS deploy and lets it work locally.
-- **`.dev.vars` → `runtime.env` requires `platformProxy` in dev**: `context.locals.runtime.env.APP_PASSPHRASE` is only populated in `astro dev` when the Cloudflare adapter's `platformProxy` is active. `astro.config.mjs` currently calls `cloudflare()` with no options. **Confirm this before writing the middleware** — if platformProxy is not on by default in `@astrojs/cloudflare` 13.5.0, enable it (`cloudflare({ platformProxy: { enabled: true } })`); otherwise the passphrase reads `undefined` in dev and the fail-closed logic locks you out of your own local app. This is the single most likely thing to derail implementation.
+- **`.dev.vars` → env in dev (RESOLVED)**: this was flagged as the single most likely thing to derail. In adapter v13.5.0 there is no `platformProxy` and no `locals.runtime.env`; `astro dev` runs real workerd and `import { env } from "cloudflare:workers"` is populated at request time, reading `.dev.vars` automatically (dev log: "Using secrets defined in .dev.vars"). Verified end-to-end in dev: a correct passphrase POST sets the session cookie and redirects home; a missing/wrong value fails closed. No config change to `astro.config.mjs` was needed.
 - **Missing env var**: if the passphrase env var is unset (misconfigured deploy), middleware must **fail closed** — treat every request as unauthenticated and redirect to `/unlock` (which will also reject every attempt), never fail open to grant access.
 
 ## Phase 1: Verification core + env wiring
@@ -59,9 +59,9 @@ A dependency-free, unit-testable verification module plus the env/typing wiring 
 
 **File**: `astro.config.mjs` (verify, edit only if needed)
 
-**Intent**: Before writing any gate code, confirm `.dev.vars` actually reaches `context.locals.runtime.env` under `astro dev` — otherwise the passphrase is `undefined` in dev and the fail-closed gate locks you out locally.
+**Intent**: Before writing any gate code, confirm `.dev.vars` actually reaches the runtime env under `astro dev` — otherwise the passphrase is `undefined` in dev and the fail-closed gate locks you out locally.
 
-**Contract**: Verify the Cloudflare adapter's `platformProxy` is active in dev (it is the mechanism that surfaces `.dev.vars`). If not on by default in `@astrojs/cloudflare` 13.5.0, set `cloudflare({ platformProxy: { enabled: true } })`. A 30-second smoke test (log `runtime.env.APP_PASSPHRASE` in a throwaway endpoint, or check via the existing patterns) confirms it before the middleware depends on it.
+**Contract (RESOLVED)**: No `astro.config.mjs` change required. Adapter v13.5.0 has no `platformProxy`; env is read via `import { env } from "cloudflare:workers"` and `astro dev` (real workerd) loads `.dev.vars` automatically. Smoke test done: a temporary probe in `/api/unlock` confirmed `env.APP_PASSPHRASE` is a populated string at request time, and the full unlock flow works in dev (probe removed after).
 
 #### 1. Session token + verification module
 
@@ -87,7 +87,7 @@ function timingSafeEqual(a: string, b: string): boolean {
 
 **Intent**: Make `APP_PASSPHRASE` type-safe where the Cloudflare adapter exposes it, and give local dev a passphrase without committing the real one.
 
-**Contract**: In `src/env.d.ts`, declare the Cloudflare runtime env shape so `context.locals.runtime.env.APP_PASSPHRASE` is typed as `string`. `.dev.vars` contains `APP_PASSPHRASE=<dev value>` and is added to `.gitignore`. `.dev.vars.example` documents the key with a placeholder. (Per Cloudflare/`@astrojs/cloudflare` convention `.dev.vars` is the local secret source.)
+**Contract**: In `src/env.d.ts`, `declare module "cloudflare:workers"` exporting `env: { APP_PASSPHRASE: string }` so the import is typed as `string`. `.dev.vars` contains `APP_PASSPHRASE=<dev value>` and is git-ignored. `.dev.vars.example` documents the key with a placeholder. (Per Cloudflare/`@astrojs/cloudflare` convention `.dev.vars` is the local secret source.)
 
 #### 3. Git-ignore the dev secret
 
@@ -127,7 +127,7 @@ Wire the verification module into request handling: the edge gate, the unlock pa
 
 **Intent**: Intercept every request, allow the unlock page / endpoint / static assets, and for everything else require a valid session cookie — redirecting to `/unlock` when absent or invalid. Fail closed if the passphrase env var is missing.
 
-**Contract**: `export const onRequest = defineMiddleware(async (context, next) => …)`. Reads `context.locals.runtime.env.APP_PASSPHRASE` and `context.cookies.get(SESSION_COOKIE)?.value`; calls `verifyToken`. Allowlist (checked first): exact `/unlock`, exact `/api/unlock`, and prefix matches for static assets (`/_astro/`, `/_image`, `/favicon`). On invalid session for a non-allowlisted path: `return context.redirect("/unlock")`. On valid: `return next()`.
+**Contract**: `export const onRequest = defineMiddleware(async (context, next) => …)`. Reads `env.APP_PASSPHRASE` (from `import { env } from "cloudflare:workers"`) and `context.cookies.get(SESSION_COOKIE)?.value`, then delegates the whole decision to the pure `evaluateGate(pathname, cookieValue, passphrase)` → `"allow" | "to-unlock" | "to-home"`. Allowlist (checked first inside `evaluateGate`): exact `/api/unlock` and prefix matches for static assets (`/_astro/`, `/_image`, `/favicon`). `to-unlock` → `context.redirect("/unlock")`; `to-home` → `context.redirect("/")`; `allow` → `next()`. `/unlock` is NOT allowlisted (see Open Risks).
 
 #### 2. Unlock page
 
@@ -135,7 +135,7 @@ Wire the verification module into request handling: the edge gate, the unlock pa
 
 **Intent**: Server-rendered passphrase prompt — a plain HTML form, no React island, works without client JS. Reuses the existing `Layout.astro` and Tailwind/shadcn styling for visual consistency.
 
-**Contract**: Renders a `<form method="POST" action="/api/unlock">` with a single `type="password"` field named `passphrase` and a submit button. Reads an optional `?error=1` query param (set by the endpoint on failure) to render an inline error message. If the visitor already has a valid session, redirect to `/` (avoid showing the gate to an unlocked user). Polish language to match `index.astro`.
+**Contract**: Renders a `<form method="POST" action="/api/unlock">` with a single `type="password"` field named `passphrase` and a submit button. Reads an optional `?error=1` query param (set by the endpoint on failure) to render an inline `role="alert"` error message. Purely presentational — the already-unlocked → `/` redirect is owned by the middleware (`to-home`), not the frontmatter, so no server logic/`return` lives in this `.astro` file. Polish language to match `index.astro`.
 
 #### 3. Unlock verify endpoint
 
@@ -143,7 +143,7 @@ Wire the verification module into request handling: the edge gate, the unlock pa
 
 **Intent**: Verify the submitted passphrase, set the session cookie on success, redirect appropriately. First API route in the project.
 
-**Contract**: `export const prerender = false;` and `export const POST: APIRoute = async (context) => …`. Reads `passphrase` from the posted form data, compares `deriveToken(submitted)` against `deriveToken(env.APP_PASSPHRASE)` (or equivalently verifies via the module). On success: `context.cookies.set(SESSION_COOKIE, token, { httpOnly: true, secure: import.meta.env.PROD, sameSite: "lax", path: "/", maxAge: COOKIE_MAX_AGE })` then `return context.redirect("/")`. On failure: `return context.redirect("/unlock?error=1")`. Fail closed if env var missing.
+**Contract**: `export const prerender = false;` and `export const POST: APIRoute = async (context) => …`. Reads `passphrase` from the posted form data, derives `token = deriveToken(submitted)` and verifies via `verifyToken(token, env.APP_PASSPHRASE)`. On success: `context.cookies.set(SESSION_COOKIE, token, { httpOnly: true, secure: import.meta.env.PROD, sameSite: "lax", path: "/", maxAge: COOKIE_MAX_AGE })` then `return context.redirect("/")`. On failure: `return context.redirect("/unlock?error=1")`. Fail closed if env var missing. NOTE: Astro's default CSRF `checkOrigin` rejects cross-origin/Origin-less form POSTs with 403 — real browser submissions send `Origin` and pass; curl smoke tests must add `-H "Origin: <host>"`.
 
 ### Success Criteria:
 
@@ -255,39 +255,39 @@ No data migration. The cookie is new; existing users (the single owner) simply s
 
 #### Automated
 
-- [ ] 1.1 Type checking passes: `npm run build`
-- [ ] 1.2 Linting passes: `npm run lint`
-- [ ] 1.3 Unit tests for `deriveToken` / `verifyToken` pass: `npm run test:run`
+- [x] 1.1 Type checking passes: `npm run build`
+- [x] 1.2 Linting passes: `npm run lint`
+- [x] 1.3 Unit tests for `deriveToken` / `verifyToken` pass: `npm run test:run`
 
 #### Manual
 
-- [ ] 1.4 `.dev.vars` exists locally with a dev passphrase and is git-ignored
+- [x] 1.4 `.dev.vars` exists locally with a dev passphrase and is git-ignored
 
 ### Phase 2: Middleware gate + unlock flow
 
 #### Automated
 
-- [ ] 2.1 Type checking passes: `npm run build`
-- [ ] 2.2 Linting passes: `npm run lint`
-- [ ] 2.3 Middleware unit tests pass: `npm run test:run`
+- [x] 2.1 Type checking passes: `npm run build`
+- [x] 2.2 Linting passes: `npm run lint`
+- [x] 2.3 Middleware unit tests pass: `npm run test:run`
 
 #### Manual
 
-- [ ] 2.4 `/` redirects to `/unlock` in dev
-- [ ] 2.5 Wrong passphrase → inline error, no access
-- [ ] 2.6 Correct passphrase → tool loads; cookie is HttpOnly
-- [ ] 2.7 Reload after unlock stays unlocked; SkillsTool works (no regression)
+- [x] 2.4 `/` redirects to `/unlock` in dev
+- [x] 2.5 Wrong passphrase → inline error, no access
+- [x] 2.6 Correct passphrase → tool loads; cookie is HttpOnly
+- [x] 2.7 Reload after unlock stays unlocked; SkillsTool works (no regression)
 
 ### Phase 3: Tests + secret/deploy
 
 #### Automated
 
-- [ ] 3.1 Full unit suite passes: `npm run test:run`
-- [ ] 3.2 Lint + build pass: `npm run lint && npm run build`
-- [ ] 3.3 Playwright e2e passes: `npx playwright test passphrase-gate`
+- [x] 3.1 Full unit suite passes: `npm run test:run`
+- [x] 3.2 Lint + build pass: `npm run lint && npm run build`
+- [x] 3.3 Playwright e2e passes: `npx playwright test passphrase-gate`
 
 #### Manual
 
-- [ ] 3.4 Live URL in a fresh session shows the unlock page
-- [ ] 3.5 Correct passphrase on live URL grants access; tool works
-- [ ] 3.6 Wrong passphrase on live URL is rejected
+- [x] 3.4 Live URL in a fresh session shows the unlock page
+- [x] 3.5 Correct passphrase on live URL grants access; tool works
+- [x] 3.6 Wrong passphrase on live URL is rejected

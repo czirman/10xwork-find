@@ -1,5 +1,7 @@
 import { test, expect } from "@playwright/test";
 
+import { unlockViaCookie } from "./helpers/auth";
+
 // Pokrywa Ryzyko #6 z context/foundation/test-plan.md:
 // "Operacja CRUD psuje listę — duplikat, pusta/whitespace nazwa zaakceptowana,
 //  edycja koliduje, albo usunięcie kasuje zły element."
@@ -10,6 +12,14 @@ test.describe("Zarządzanie umiejętnościami (Base Skills) - Walidacja CRUD (Ry
   // żeby przebiegi nie kolidowały ze sobą.
   const uniqueId = Date.now();
   const testSkillName = `Umiejetnosc_Testowa_${uniqueId}`;
+
+  // S-03: aplikacja jest za bramą hasłem (middleware przekierowuje "/" na
+  // /unlock). Ten test sprawdza CRUD narzędzia, nie samą bramę, więc omijamy
+  // bramę bez UI — ustawiamy ciasteczko sesji wprost (kontrakt bramy pokrywa
+  // passphrase-gate.e2e.spec.ts). "Authenticate without the UI".
+  test.beforeEach(async ({ context }) => {
+    await unlockViaCookie(context);
+  });
 
   // 4. CLEANUP: aplikacja trzyma dane na urządzeniu (localStorage, brak API).
   // Czyścimy magazyn po każdym teście, żeby nie zaśmiecać kolejnych przebiegów.

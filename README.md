@@ -33,8 +33,19 @@ npm install
 npm run dev
 ```
 
-The app has no runtime environment variables or external services — it runs
-fully local with no configuration.
+All skill and posting data stays on-device; there are no external services.
+The one piece of configuration is the access gate's shared passphrase
+(`APP_PASSPHRASE`). For local dev, copy `.dev.vars.example` to `.dev.vars`
+(git-ignored) and set a value:
+
+```bash
+cp .dev.vars.example .dev.vars
+# then edit .dev.vars and set APP_PASSPHRASE=<your-local-passphrase>
+```
+
+`npm run dev` loads `.dev.vars` automatically. A missing/unset value fails
+closed — every request is gated to the unlock page. See [Deployment](#deployment)
+for the production secret.
 
 ## Available Scripts
 
@@ -73,6 +84,26 @@ npm run build
 ```bash
 npx wrangler deploy
 ```
+
+### Access gate secret
+
+The deployed app is protected by a single shared passphrase checked at the
+edge (Astro middleware on the Worker). Set it once as a Cloudflare Worker
+secret — out-of-band from the CI auto-deploy:
+
+```bash
+npx wrangler secret put APP_PASSPHRASE
+```
+
+- Use a **high-entropy** value (24+ random characters). With no rate limiting
+  and an unsalted session-cookie hash, the passphrase entropy is the entire
+  security model.
+- A missing/unset secret **fails closed**: every request is redirected to the
+  unlock page and every unlock attempt is rejected — set the secret in the same
+  window as the deploy, or the live app locks everyone out.
+- Local dev uses `.dev.vars` instead (see [Getting Started](#getting-started)).
+- On success the unlock page issues a 30-day `HttpOnly`, `SameSite=Lax`,
+  `Secure` (on HTTPS) session cookie; no server-side user records exist.
 
 ## CI
 
