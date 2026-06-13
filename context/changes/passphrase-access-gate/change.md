@@ -1,7 +1,7 @@
 ---
 change_id: passphrase-access-gate
 title: Passphrase access gate
-status: implemented
+status: impl_reviewed
 created: 2026-06-09
 updated: 2026-06-13
 roadmap_ref: S-03
