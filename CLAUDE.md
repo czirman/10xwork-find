@@ -13,7 +13,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 Pre-commit: husky + lint-staged runs `eslint --fix` on `*.{ts,tsx,astro}` and `prettier --write` on `*.{json,css,md}`.
 
-CI (`.github/workflows/ci.yml`): lint + build on every push/PR to `main`.
+CI (`.github/workflows/ci.yml`): lint + build on every push/PR to `main`; on push to `main` it also deploys to Cloudflare (requires the `CLOUDFLARE_API_TOKEN` / `CLOUDFLARE_ACCOUNT_ID` Actions secrets).
 
 ## Architecture
 
@@ -25,7 +25,7 @@ CI (`.github/workflows/ci.yml`): lint + build on every push/PR to `main`.
 
 ### Auth & data
 
-No authentication. This is a single-user, local-only tool: the user opens the app and is immediately in, and all data lives on the user's device (no auth, no server-side user data, no Supabase). There is no request middleware and no protected routes — the landing page (`src/pages/index.astro`) is the tool itself.
+Single-user tool with a shared passphrase gate in production. All data lives on the user's device (no server-side user data, no Supabase, no per-user accounts). The production deployment on Cloudflare is protected by a single passphrase compared against the `APP_PASSPHRASE` Worker secret — this gates access to the deployed app; it is not a multi-user auth system. Locally the gate can be left unset for an open dev experience.
 
 ### Key conventions
 
@@ -41,8 +41,8 @@ No authentication. This is a single-user, local-only tool: the user opens the ap
 ### Environment
 
 - Node.js v22.14.0 (`.nvmrc`)
-- No runtime environment variables or external services — the app is fully local/on-device.
-- Deploy: `npx wrangler deploy`
+- The app is fully local/on-device with no external services. The only runtime configuration is the production passphrase gate, stored as the `APP_PASSPHRASE` Worker secret (set via `npx wrangler secret put APP_PASSPHRASE`, never committed).
+- Deploy: `npx wrangler deploy`. CI deploys on push to `main` via `cloudflare/wrangler-action`, authenticated with the `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` GitHub Actions secrets.
 
 <!-- BEGIN @przeprogramowani/10x-cli -->
 
